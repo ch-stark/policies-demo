@@ -1,0 +1,60 @@
+apiVersion: policy.open-cluster-management.io/v1
+kind: Policy
+metadata:
+  name: policy-certificatepolicy
+  namespace: default
+  annotations:
+    policy.open-cluster-management.io/standards: NIST-CSF
+    policy.open-cluster-management.io/categories: PR.DS Data Security
+    policy.open-cluster-management.io/controls: PR.DS-2 Data-in-transit
+spec:
+  remediationAction: inform
+  disabled: false
+  policy-templates:
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: CertificatePolicy
+        metadata:
+          name: certificate-policy-1
+          namespace: kube-system
+          label:
+            category: "System-Integrity"
+        spec:
+          namespaceSelector:
+            include: ["default", "kube-*"]
+            exclude: ["kube-system"]
+          remediationAction: inform
+          minimumDuration: 100h
+          minimumCADuration: 200h
+          maximumDuration: 2161h
+          maximumCADuration: 43920h
+          allowedSANPattern: "[[:alpha:]]"
+          disallowedSANPattern: "[\\*]"
+
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: PlacementBinding
+metadata:
+  name: binding-policy-certificatepolicy
+  namespace: default
+placementRef:
+  name: placement-policy-certificatepolicy
+  kind: PlacementRule
+  apiGroup: apps.open-cluster-management.io
+subjects:
+- name: policy-certificatepolicy
+  kind: Policy
+  apiGroup: policy.open-cluster-management.io
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: PlacementRule
+metadata:
+  name: placement-policy-certificatepolicy
+  namespace: default
+spec:
+  clusterConditions:
+  - status: "True"
+    type: ManagedClusterConditionAvailable
+  clusterSelector:
+    matchExpressions:
+      []  # selects all clusters if not specified
