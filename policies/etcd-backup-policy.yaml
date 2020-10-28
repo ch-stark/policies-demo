@@ -2,6 +2,7 @@ apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:
   name: policy-etcd-backup
+  namespace: openshift-config
   annotations:
     policy.open-cluster-management.io/categories: NIST SP 800-53
     policy.open-cluster-management.io/controls: CM Configuration Management 
