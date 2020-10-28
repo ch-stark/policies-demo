@@ -33,6 +33,7 @@ spec:
                 kind: ClusterRoleBinding
                 metadata:
                   name: cluster-admin-approver-sa-crb
+                  namespace: default
                 roleRef:
                   name: cluster-admin
                   apiGroup: rbac.authorization.k8s.io
