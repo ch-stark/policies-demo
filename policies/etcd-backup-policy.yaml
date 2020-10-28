@@ -27,13 +27,14 @@ spec:
                 kind: ServiceAccount
                 metadata:
                   name: approver
+                  namespace: openshift-config
             - complianceType: musthave
               objectDefinition:
                 apiVersion: rbac.authorization.k8s.io/v1
                 kind: ClusterRoleBinding
                 metadata:
                   name: cluster-admin-approver-sa-crb
-                  namespace: default
+                  namespace: openshift-config
                 roleRef:
                   name: cluster-admin
                   apiGroup: rbac.authorization.k8s.io
@@ -47,6 +48,7 @@ spec:
                 kind: PersistentVolumeClaim
                 metadata:
                   name: etcd-backup
+                  namespace: openshift-config
                 spec:
                   accessModes:
                     - ReadWriteOnce
@@ -146,12 +148,14 @@ spec:
                 kind: ConfigMap
                 metadata:
                   name: etcd-backup-script
+                  namespace: openshift-config
             - complianceType: musthave
               objectDefinition:
                 apiVersion: batch/v1beta1
                 kind: CronJob
                 metadata:
                   name: cronjob-etcd-backup
+                  namespace: openshift-config
                   labels:
                     purpose: etcd-backup
                 spec:
