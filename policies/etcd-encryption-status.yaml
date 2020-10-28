@@ -88,4 +88,4 @@ spec:
     type: ManagedClusterConditionAvailable
   clusterSelector:
     matchExpressions:
-      - {key: env, operator: In, values: ["dev"]}
+      - {key: handleetcd, operator: In, values: ["yes"]}    
