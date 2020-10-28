@@ -102,7 +102,7 @@ spec:
                   name: etcd-backup-script
                   namespace: openshift-config
                 data:
-                  etcd-backup.sh: |
+                  etcd-backup.sh: |+
                     #!/bin/bash
 
                     DATE=$(date +%Y%m%dT%H%M%S)
