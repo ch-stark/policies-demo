@@ -1,7 +1,7 @@
 apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:
-  name: policy-certificatepolicy
+  name: policy-certificatepolicy-demo
   namespace: default
   annotations:
     policy.open-cluster-management.io/standards: NIST-CSF
@@ -13,43 +13,35 @@ spec:
   policy-templates:
     - objectDefinition:
         apiVersion: policy.open-cluster-management.io/v1
-        kind: CertificatePolicy
+        kind: CertificatePolicy # cert management expiration
         metadata:
-          name: certificate-policy-1
-          namespace: kube-system
-          label:
-            category: "System-Integrity"
+          name: policy-certificatepolicy-demo-example
         spec:
           namespaceSelector:
-            include: ["default", "kube-*"]
-            exclude: ["kube-system"]
-          remediationAction: inform
-          minimumDuration: 100h
-          minimumCADuration: 200h
-          maximumDuration: 2161h
-          maximumCADuration: 43920h
-          allowedSANPattern: "[[:alpha:]]"
-          disallowedSANPattern: "[\\*]"
-
+            include: ["default"]
+            exclude: ["kube-*"]
+          remediationAction: inform # will be overridden by remediationAction in parent policy
+          severity: low
+          minimumDuration: 300h
 ---
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
 metadata:
-  name: binding-policy-certificatepolicy
+  name: binding-policy-certificatepolicy-demo
   namespace: default
 placementRef:
-  name: placement-policy-certificatepolicy
+  name: placement-policy-certificatepolicy-demo
   kind: PlacementRule
   apiGroup: apps.open-cluster-management.io
 subjects:
-- name: policy-certificatepolicy
+- name: policy-certificatepolicy-demo
   kind: Policy
   apiGroup: policy.open-cluster-management.io
 ---
 apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
 metadata:
-  name: placement-policy-certificatepolicy
+  name: placement-policy-certificatepolicy-demo
   namespace: default
 spec:
   clusterConditions:
