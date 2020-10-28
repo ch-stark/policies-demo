@@ -43,6 +43,7 @@ spec:
                 subjects:
                   - name: approver
                     kind: ServiceAccount
+                    namespace: openshift-config 
             - complianceType: musthave
               objectDefinition:
                 apiVersion: v1
