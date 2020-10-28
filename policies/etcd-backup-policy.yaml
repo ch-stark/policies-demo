@@ -266,4 +266,4 @@ spec:
     type: ManagedClusterConditionAvailable
   clusterSelector:
     matchExpressions:
-      - {key: environment, operator: In, values: ["dev"]}
+      - {key: etcdbackup, operator: In, values: ["yes"]}
