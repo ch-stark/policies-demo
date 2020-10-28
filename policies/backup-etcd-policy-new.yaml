@@ -175,7 +175,6 @@ spec:
                     backup_latest_kube_static_resources "${BACKUP_RESOURCE_LIST[@]}"
                     etcdctl snapshot save ${SNAPSHOT_FILE}
                     echo "snapshot db and kube resources are successfully saved to
-
     - objectDefinition:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
@@ -204,7 +203,7 @@ spec:
                   suspend: false
                   jobTemplate:
                     spec:
-                      backoffLimit: 5
+                      backoffLimit: 0
                       template:
                         spec:
                           nodeSelector:
