@@ -27,7 +27,7 @@ spec:
                 kind: Namespace # must have namespace 'gitops'
                 apiVersion: v1
                 metadata:
-                  name: demo
+                  name: demonamespace
 ---
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
