@@ -156,7 +156,7 @@ spec:
           object-templates:
             - complianceType: musthave
               objectDefinition:
-              kind: CronJob
+                kind: CronJob
                 apiVersion: batch/v1beta1
                 metadata:
                   name: cronjob-etcd-backup
