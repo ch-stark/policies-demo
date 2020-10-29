@@ -101,12 +101,7 @@ spec:
                 metadata:
                   name: etcd-backup-script
                   namespace: openshift-config
-                    kind: ConfigMap
-                    apiVersion: v1
-                    metadata:
-                      name: etcd-backup-script
-                      namespace: openshift-config
-                    data:
+                data:
                       etcd-backup.sh: |
                         #!/bin/bash
 
