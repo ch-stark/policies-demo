@@ -101,7 +101,7 @@ spec:
                   etcd-backup.sh: |+
                     
                     DATE=$(date +%Y%m%dT%H%M%S)
-
+                    echo "step1"  
                     /usr/local/bin/etcd-snapshot-backup-disconnected.sh /assets/backup
  
                     if [ $? -eq 0 ]; then
@@ -120,6 +120,7 @@ spec:
                     set -o pipefail
                     set -o errtrace
 
+                    echo "step2"  
                     if [[ $EUID -ne 0 ]]; then
                       echo "This script must be run as root"
                       exit 1
@@ -157,7 +158,7 @@ spec:
 
                       tar -cpzf $BACKUP_TAR_FILE -C ${CONFIG_FILE_DIR} "${LATEST_RESOURCE_DIRS[@]}"
                      }
-
+                      echo "step3   
                       BACKUP_DIR="$1"
                       
                       DATESTRING=$(date "+%F_%H%M%S")
@@ -173,14 +174,20 @@ spec:
                       source /etc/kubernetes/static-pod-resources/etcd-certs/configmaps/etcd-scripts/etcd.env
                       
                       source /etc/kubernetes/static-pod-resources/etcd-certs/configmaps/etcd-scripts/etcd-common-tools
-
+                         
+                      echo "step4" 
+                      
                       if [ ! -f "$ETCDCTL_CACERT" ] && [ ! -d "${CONFIG_FILE_DIR}/static-pod-certs" ]; then
                         ln -s ${CONFIG_FILE_DIR}/static-pod-resources/etcd-certs ${CONFIG_FILE_DIR}/static-pod-certs
                       fi
 
                       backup_latest_kube_static_resources "${BACKUP_RESOURCE_LIST[@]}"
                       
+                      echo "step5"
+                      
                       etcdctl snapshot save ${SNAPSHOT_FILE}
+                      
+                      echo "step6" 
                       
                       echo "snapshot db and kube resources are successfully saved to ${BACKUP_DIR}"
 
