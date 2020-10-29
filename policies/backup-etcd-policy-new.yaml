@@ -193,6 +193,7 @@ spec:
 
                 kind: ConfigMap
                 metadata:
+                  namespace: openshift-config 
                   name: etcd-backup-script
     - objectDefinition:
         apiVersion: policy.open-cluster-management.io/v1
