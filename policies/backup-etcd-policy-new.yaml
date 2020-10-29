@@ -143,9 +143,14 @@ spec:
                       mkdir -p $1
                     fi
 
+
+                   echo "step33"  
+
                     function backup_latest_kube_static_resources {
                       
                       RESOURCES=("$@")
+                       
+                      echo "step33"    
 
                       LATEST_RESOURCE_DIRS=()
                       for RESOURCE in "${RESOURCES[@]}"; do
@@ -158,22 +163,22 @@ spec:
                         echo "found latest ${RESOURCE}: ${LATEST_RESOURCE}"
                         LATEST_RESOURCE_DIRS+=("${LATEST_RESOURCE#${CONFIG_FILE_DIR}/}")
                       done
-
+                      echo "step34"   
                       tar -cpzf $BACKUP_TAR_FILE -C ${CONFIG_FILE_DIR} "${LATEST_RESOURCE_DIRS[@]}"
                      }
-                      echo "step3   
+                      echo "step35   
                       BACKUP_DIR="$1"
                       
                       DATESTRING=$(date "+%F_%H%M%S")
-                      
+                      echo "step36"  
                       BACKUP_TAR_FILE=${BACKUP_DIR}/static_kuberesources_${DATESTRING}.tar.gz
                       
                       SNAPSHOT_FILE="${BACKUP_DIR}/snapshot_${DATESTRING}.db"
-                      
+                      echo "step37"  
                       BACKUP_RESOURCE_LIST=("kube-apiserver-pod" "kube-controller-manager-pod" "kube-scheduler-pod" "etcd-pod")
 
                       trap "rm -f ${BACKUP_TAR_FILE} ${SNAPSHOT_FILE}" ERR
-
+                      echo "step38"   
                       source /etc/kubernetes/static-pod-resources/etcd-certs/configmaps/etcd-scripts/etcd.env
                       
                       source /etc/kubernetes/static-pod-resources/etcd-certs/configmaps/etcd-scripts/etcd-common-tools
