@@ -145,39 +145,60 @@ spec:
 
 
                     echo "step33"  
+                    function backup_latest_kube_static_resources {
+                      
+                      echo "step331"  
+                      
+                      RESOURCES=("$@")
+                       
+                      echo "step332"    
 
+                      LATEST_RESOURCE_DIRS=()
+                      for RESOURCE in "${RESOURCES[@]}"; do
+                        LATEST_RESOURCE=$(ls -trd "${CONFIG_FILE_DIR}"/static-pod-resources/${RESOURCE}-[0-9]* | tail -1) || true
+                        if [ -z "$LATEST_RESOURCE" ]; then
+                          echo "error finding static-pod-resource ${RESOURCE}"
+                          exit 1
+                        fi
 
-                    BACKUP_DIR="$1"
-                      
-                    DATESTRING=$(date "+%F_%H%M%S")
-                    echo "step36"  
-                    BACKUP_TAR_FILE=${BACKUP_DIR}/static_kuberesources_${DATESTRING}.tar.gz
-                      
-                    SNAPSHOT_FILE="${BACKUP_DIR}/snapshot_${DATESTRING}.db"
-                    echo "step37"  
-                    BACKUP_RESOURCE_LIST=("kube-apiserver-pod" "kube-controller-manager-pod" "kube-scheduler-pod" "etcd-pod")
+                        echo "found latest ${RESOURCE}: ${LATEST_RESOURCE}"
+                        LATEST_RESOURCE_DIRS+=("${LATEST_RESOURCE#${CONFIG_FILE_DIR}/}")
+                      done
+                      echo "step34"   
+                      tar -cpzf $BACKUP_TAR_FILE -C ${CONFIG_FILE_DIR} "${LATEST_RESOURCE_DIRS[@]}"
+                     }
 
-                    trap "rm -f ${BACKUP_TAR_FILE} ${SNAPSHOT_FILE}" ERR
-                    echo "step38"   
-                    source /etc/kubernetes/static-pod-resources/etcd-certs/configmaps/etcd-scripts/etcd.env
-                    
-                    source /etc/kubernetes/static-pod-resources/etcd-certs/configmaps/etcd-scripts/etcd-common-tools
-                         
-                    echo "step4" 
-                      
-                    if [ ! -f "$ETCDCTL_CACERT" ] && [ ! -d "${CONFIG_FILE_DIR}/static-pod-certs" ]; then
-                      ln -s ${CONFIG_FILE_DIR}/static-pod-resources/etcd-certs ${CONFIG_FILE_DIR}/static-pod-certs
-                    fi
+                      BACKUP_DIR="$1"
 
-                    backup_latest_kube_static_resources "${BACKUP_RESOURCE_LIST[@]}"
-                      
-                    echo "step5"
-                      
-                    etcdctl snapshot save ${SNAPSHOT_FILE}
-                      
-                    echo "step6" 
-                      
-                    echo "snapshot db and kube resources are successfully saved to ${BACKUP_DIR}"
+                      DATESTRING=$(date "+%F_%H%M%S")
+                      echo "step36"  
+                      BACKUP_TAR_FILE=${BACKUP_DIR}/static_kuberesources_${DATESTRING}.tar.gz
+
+                      SNAPSHOT_FILE="${BACKUP_DIR}/snapshot_${DATESTRING}.db"
+                      echo "step37"  
+                      BACKUP_RESOURCE_LIST=("kube-apiserver-pod" "kube-controller-manager-pod" "kube-scheduler-pod" "etcd-pod")
+
+                      trap "rm -f ${BACKUP_TAR_FILE} ${SNAPSHOT_FILE}" ERR
+                      echo "step38"   
+                      source /etc/kubernetes/static-pod-resources/etcd-certs/configmaps/etcd-scripts/etcd.env
+
+                      source /etc/kubernetes/static-pod-resources/etcd-certs/configmaps/etcd-scripts/etcd-common-tools
+
+                      echo "step4" 
+
+                      if [ ! -f "$ETCDCTL_CACERT" ] && [ ! -d "${CONFIG_FILE_DIR}/static-pod-certs" ]; then
+                        ln -s ${CONFIG_FILE_DIR}/static-pod-resources/etcd-certs ${CONFIG_FILE_DIR}/static-pod-certs
+                      fi
+
+                      backup_latest_kube_static_resources "${BACKUP_RESOURCE_LIST[@]}"
+
+                      echo "step5"
+
+                      etcdctl snapshot save ${SNAPSHOT_FILE}
+
+                      echo "step6" 
+
+                      echo "snapshot db and kube resources are successfully saved to ${BACKUP_DIR}"
 
                 kind: ConfigMap
                 metadata:
