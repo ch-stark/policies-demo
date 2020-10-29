@@ -147,7 +147,6 @@ spec:
                     echo "step33"  
 
 
-                    echo "step35   
                     BACKUP_DIR="$1"
                       
                     DATESTRING=$(date "+%F_%H%M%S")
