@@ -148,6 +148,8 @@ spec:
 
                     function backup_latest_kube_static_resources {
                       
+                      echo "step331"  
+                      
                       RESOURCES=("$@")
                        
                       echo "step332"    
