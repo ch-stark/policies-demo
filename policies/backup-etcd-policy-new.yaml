@@ -2,7 +2,7 @@ apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:
   name: backup-etcd-policy
-  namespace: default
+  namespace: openshift-config
   annotations:
     policy.open-cluster-management.io/standards: NIST-CSF
     policy.open-cluster-management.io/categories: PR.IP Information Protection Processes and Procedures
@@ -140,12 +140,119 @@ spec:
                     \ \n  etcdctl snapshot save ${SNAPSHOT_FILE}\n  \n  echo \"snapshot db and kube
                     resources are successfully saved to ${BACKUP_DIR}\"\n\n"
 
+
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: backup-etcd-policy-job
+          namespace: openshift-config
+        spec:
+          remediationAction: inform # will be overridden by remediationAction in parent policy
+          severity: low
+          namespaceSelector:
+            exclude: ["kube-*"]
+            include: ["default"]
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+              kind: CronJob
+                apiVersion: batch/v1beta1
+                metadata:
+                  name: cronjob-etcd-backup
+                  namespace: openshift-config
+                  labels:
+                    purpose: etcd-backup
+                spec:
+                  schedule: "*/1 * * * *"
+                  startingDeadlineSeconds: 200
+                  concurrencyPolicy: Forbid
+                  suspend: false
+                  jobTemplate:
+                    spec:
+                      backoffLimit: 0
+                      template:
+                        spec:
+                          nodeSelector:
+                            node-role.kubernetes.io/master: ''
+                          restartPolicy: Never
+                          activeDeadlineSeconds: 200
+                          serviceAccountName: approver
+                          hostNetwork: true
+                          containers:
+                            - resources:
+                                requests:
+                                  cpu: 300m
+                                  memory: 250Mi
+                              terminationMessagePath: /dev/termination-log
+                              name: etcd-backup
+                              command:
+                                - /bin/sh
+                                - '-c'
+                                - >-
+                                  /usr/local/bin/etcd-backup.sh && ls -1 /etcd-backup/* | sort -r | tail -n +6 | xargs rm -rf > /dev/null 2>&1
+                              env:
+                              securityContext:
+                                privileged: true
+                              imagePullPolicy: IfNotPresent
+                              volumeMounts:
+                                - name: certs
+                                  mountPath: /etc/ssl/etcd/
+                                - name: conf
+                                  mountPath: /etc/etcd/
+                                - name: kubeconfig
+                                  mountPath: /etc/kubernetes/
+                                - name: etcd-backup-script
+                                  mountPath: /usr/local/bin/etcd-backup.sh
+                                  subPath: etcd-backup.sh
+                                - name: etcd-backup-script
+                                  mountPath: /usr/local/bin/etcd-snapshot-backup-disconnected.sh
+                                  subPath: etcd-snapshot-backup-disconnected.sh
+                                - name: etcd-backup
+                                  mountPath: /etcd-backup
+                                - name: scripts
+                                  mountPath: /usr/local/bin
+                              terminationMessagePolicy: FallbackToLogsOnError
+                              image: >-
+                                quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:6a2378154881e6f9a4638f41242518d850e19b0d7d9ef74a2be55b87f4625e87
+                          serviceAccount: approver
+                          tolerations:
+                            - operator: Exists
+                              effect: NoSchedule
+                            - operator: Exists
+                              effect: NoExecute
+                          volumes:
+                            - name: certs
+                              hostPath:
+                                path: /etc/kubernetes/static-pod-resources/etcd-member
+                                type: ''
+                            - name: conf
+                              hostPath:
+                                path: /etc/etcd
+                                type: ''
+                            - name: kubeconfig
+                              hostPath:
+                                path: /etc/kubernetes
+                                type: ''
+                            - name: scripts
+                              hostPath:
+                                path: /usr/local/bin
+                                type: ''
+                            - name: etcd-backup
+                              persistentVolumeClaim:
+                                claimName: etcd-backup
+                            - name: etcd-backup-script
+                              configMap:
+                                name: etcd-backup-script
+                                defaultMode: 493
+
+
 ---
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
 metadata:
   name: binding-backup-etcd-policy
-  namespace: default
+  namespace: openshift-config
 placementRef:
   name: placement-backup-etcd-policy
   kind: PlacementRule
@@ -159,7 +266,7 @@ apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
 metadata:
   name: placement-backup-etcd-policy
-  namespace: default
+  namespace: openshift-config
 spec:
   clusterConditions:
   - status: "True"
