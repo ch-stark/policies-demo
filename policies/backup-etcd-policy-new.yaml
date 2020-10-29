@@ -150,7 +150,7 @@ spec:
                       
                       RESOURCES=("$@")
                        
-                      echo "step33"    
+                      echo "step332"    
 
                       LATEST_RESOURCE_DIRS=()
                       for RESOURCE in "${RESOURCES[@]}"; do
