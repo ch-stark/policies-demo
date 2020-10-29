@@ -146,7 +146,6 @@ spec:
         kind: ConfigurationPolicy
         metadata:
           name: backup-etcd-policy-job
-          namespace: openshift-config
         spec:
           remediationAction: inform # will be overridden by remediationAction in parent policy
           severity: low
