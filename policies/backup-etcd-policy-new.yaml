@@ -131,10 +131,13 @@ spec:
                       exit 1
                     }
 
-
+                    echo "step31"   
+                    
                     if [ -z "$1" ] || [ -f "$1" ]; then
                       usage
                     fi
+                    
+                    echo "step32"   
                     
                     if [ ! -d "$1" ]; then
                       mkdir -p $1
