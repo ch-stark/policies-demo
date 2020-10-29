@@ -144,7 +144,7 @@ spec:
                     fi
 
 
-                   echo "step33"  
+                    echo "step33"  
 
                     function backup_latest_kube_static_resources {
                       
