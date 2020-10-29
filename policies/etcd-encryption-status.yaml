@@ -34,10 +34,8 @@ spec:
                 status:
                   conditions:
                     - message: >-
-                        All resources encrypted: routes.route.openshift.io,
-                        oauthaccesstokens.oauth.openshift.io,  
-                        oauthauthorizetokens.oauth.openshift.io 
-                      reason: EncryptionCompleted
+                        All resources encrypted: routes.route.openshift.io, oauthaccesstokens.oauth.openshift.io, oauthauthorizetokens.oauth.openshift.io
+                        reason: EncryptionCompleted
     - objectDefinition:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
