@@ -25,7 +25,7 @@ spec:
           object-templates:
             - complianceType: mustnothave
               objectDefinition:
-                apiVersion: v1
+                apiVersion: batch/v1
                 kind: Job
                 metadata:
                   labels:
