@@ -27,6 +27,9 @@ spec:
               objectDefinition:
                 apiVersion: v1
                 kind: Job
+                metadata:
+                  labels:
+                    purpose: etcd-backup
                 status: 
                   failed: 1
 ---
