@@ -21,7 +21,7 @@ spec:
           severity: low
           namespaceSelector:
             exclude: ["kube-*"]
-            include: ["default"]
+            include: ["default,etcd-config"]
           object-templates:
             - complianceType: mustnothave
               objectDefinition:
