@@ -2,7 +2,7 @@ apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:
   name: policy-checkjob
-  namespace: default
+  namespace: etcd-config
   annotations:
     policy.open-cluster-management.io/standards: NIST-CSF
     policy.open-cluster-management.io/categories: PR.IP Information Protection Processes and Procedures
@@ -27,9 +27,6 @@ spec:
               objectDefinition:
                 apiVersion: batch/v1
                 kind: Job
-                metadata:
-                  labels:
-                    purpose: etcd-backup
                 status: 
                   failed: 1
     - objectDefinition:
@@ -48,16 +45,13 @@ spec:
               objectDefinition:
                 apiVersion: batch/v1
                 kind: Job
-                metadata:
-                  labels:
-                    purpose: etcd-backup
-         
+        
 ---
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
 metadata:
   name: binding-policy-checkjob
-  namespace: default
+  namespace: etcd-config
 placementRef:
   name: placement-policy-checkjob
   kind: PlacementRule
@@ -71,7 +65,7 @@ apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
 metadata:
   name: placement-policy-checkjob
-  namespace: default
+  namespace: etcd-config
 spec:
   clusterConditions:
   - status: "True"
