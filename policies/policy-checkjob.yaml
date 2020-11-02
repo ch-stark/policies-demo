@@ -47,6 +47,8 @@ spec:
               objectDefinition:
                 apiVersion: batch/v1
                 kind: Job
+                metadata:
+                  namespace: etcd-config
         
 ---
 apiVersion: policy.open-cluster-management.io/v1
