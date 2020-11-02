@@ -226,6 +226,9 @@ spec:
                   labels:
                     purpose: etcd-backup
                 spec:
+                  metadata:
+                    labels:
+                      purpose: etcd-backup
                   schedule: "* * * * *"
                   startingDeadlineSeconds: 200
                   concurrencyPolicy: Forbid
