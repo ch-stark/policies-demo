@@ -15,7 +15,7 @@ spec:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
         metadata:
-          name: policy-namespace-prod
+          name: policy-policy-checkjob
         spec:
           remediationAction: inform # will be overridden by remediationAction in parent policy
           severity: low
@@ -32,25 +32,45 @@ spec:
                     purpose: etcd-backup
                 status: 
                   failed: 1
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: policy-policy-checkjob
+        spec:
+          remediationAction: inform # will be overridden by remediationAction in parent policy
+          severity: low
+          namespaceSelector:
+            exclude: ["kube-*"]
+            include: ["default"]
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: batch/v1
+                kind: Job
+                metadata:
+                  labels:
+                    purpose: etcd-backup
+         
 ---
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
 metadata:
-  name: binding-policy-namespace
+  name: binding-policy-checkjob
   namespace: default
 placementRef:
-  name: placement-policy-namespace
+  name: placement-policy-checkjob
   kind: PlacementRule
   apiGroup: apps.open-cluster-management.io
 subjects:
-- name: policy-namespace
+- name: policy-checkjob
   kind: Policy
   apiGroup: policy.open-cluster-management.io
 ---
 apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
 metadata:
-  name: placement-policy-namespace
+  name: placement-policy-checkjob
   namespace: default
 spec:
   clusterConditions:
