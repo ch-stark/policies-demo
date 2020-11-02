@@ -27,6 +27,8 @@ spec:
               objectDefinition:
                 apiVersion: batch/v1
                 kind: Job
+                metadata:
+                  namespace: etcd-config
                 status: 
                   failed: 1
     - objectDefinition:
