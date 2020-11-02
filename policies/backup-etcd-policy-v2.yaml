@@ -29,7 +29,7 @@ spec:
                 apiVersion: v1
                 metadata:
                   name: approver
-                  namespace: openshift-config
+                  namespace: etcd-config
     - objectDefinition:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
@@ -51,7 +51,7 @@ spec:
                 subjects:
                   - kind: ServiceAccount
                     name: approver 
-                    namespace: openshift-config 
+                    namespace: etcd-config 
                 roleRef:
                   kind: ClusterRole
                   name: cluster-admin
@@ -74,7 +74,7 @@ spec:
                 apiVersion: v1
                 metadata:
                   name: etcd-backup
-                  namespace: openshift-config
+                  namespace: etcd-config
                 spec:
                   accessModes:
                     - ReadWriteOnce
@@ -202,7 +202,7 @@ spec:
 
                 kind: ConfigMap
                 metadata:
-                  namespace: openshift-config 
+                  namespace: etcd-config 
                   name: etcd-backup-script
     - objectDefinition:
         apiVersion: policy.open-cluster-management.io/v1
@@ -222,7 +222,7 @@ spec:
                 apiVersion: batch/v1beta1
                 metadata:
                   name: cronjob-etcd-backup
-                  namespace: openshift-config
+                  namespace: etcd-config
                   labels:
                     purpose: etcd-backup
                 spec:
