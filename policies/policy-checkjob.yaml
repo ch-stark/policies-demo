@@ -21,7 +21,7 @@ spec:
           severity: low
           namespaceSelector:
             exclude: ["kube-*"]
-            include: ["default,etcd-config"]
+            include: ["etcd-config"]
           object-templates:
             - complianceType: musthave
               objectDefinition:
@@ -31,25 +31,7 @@ spec:
                   namespace: etcd-config
                 status: 
                   succeeded: 1
-    - objectDefinition:
-        apiVersion: policy.open-cluster-management.io/v1
-        kind: ConfigurationPolicy
-        metadata:
-          name: policy-policy-checkjob
-        spec:
-          remediationAction: inform # will be overridden by remediationAction in parent policy
-          severity: low
-          namespaceSelector:
-            exclude: ["kube-*"]
-            include: ["default,etcd-config"]
-          object-templates:
-            - complianceType: musthave
-              objectDefinition:
-                apiVersion: batch/v1
-                kind: Job
-                metadata:
-                  namespace: etcd-config
-        
+       
 ---
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
