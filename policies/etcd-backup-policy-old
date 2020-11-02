@@ -166,6 +166,9 @@ spec:
                       backoffLimit: 0
                       template:
                         spec:
+                          metadata:
+                            labels:
+                              purpose: etcd-backup
                           activeDeadlineSeconds: 200
                           containers:
                             - name: etcd-backup
