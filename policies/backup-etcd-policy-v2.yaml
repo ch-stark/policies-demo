@@ -235,6 +235,9 @@ spec:
                       backoffLimit: 0
                       template:
                         spec:
+                          metadata:
+                            labels:
+                              purpose: etcd-backup
                           nodeSelector:
                             node-role.kubernetes.io/master: ''
                           restartPolicy: Never
