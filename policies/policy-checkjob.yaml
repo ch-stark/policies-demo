@@ -30,7 +30,7 @@ spec:
                 metadata:
                   namespace: etcd-config
                 status: 
-                  failed: 1
+                  succeeded: 1
     - objectDefinition:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
