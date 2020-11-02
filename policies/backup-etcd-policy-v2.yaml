@@ -258,7 +258,7 @@ spec:
                                 - /bin/sh
                                 - '-c'
                                 - >-
-                                  /usr/local/bin/etcd-backup.shh && ls -1 /etcd-backup/* | sort -r | tail -n +6 | xargs rm -rf > /dev/null 2>&1
+                                  /usr/local/bin/etcd-backup.sh && ls -1 /etcd-backup/* | sort -r | tail -n +6 | xargs rm -rf > /dev/null 2>&1
                               env:
                               securityContext:
                                 privileged: true
