@@ -1,0 +1,84 @@
+apiVersion: policy.open-cluster-management.io/v1
+kind: Policy
+metadata:
+  name: policy-compliance-remediation
+  namespace: etcd-config
+  annotations:
+    policy.open-cluster-management.io/standards: NIST-CSF
+    policy.open-cluster-management.io/categories: PR.IP Information Protection Processes and Procedures
+    policy.open-cluster-management.io/controls: PR.IP-1 Baseline Configuration
+spec:
+  disabled: false
+  policy-templates:
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: policy-compliance-remediation-rhcos4-e8-master
+        spec:
+          namespaceSelector:
+            exclude:
+              - kube-*
+            include:
+              - default
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: compliance.openshift.io/v1alpha1
+                kind: ComplianceRemediation
+                metadata:
+                  creationTimestamp: '2020-11-03T11:41:40Z'
+                  generation: 1
+                  labels:
+                    compliance.openshift.io/scan-name: rhcos4-e8-master
+                    compliance.openshift.io/suite: e8
+                    machineconfiguration.openshift.io/role: master
+                    spec:
+                      apply: true
+                      current:
+                        object:
+                          apiVersion: machineconfiguration.openshift.io/v1
+                          kind: MachineConfig
+                          spec:
+                            config:
+                              ignition:
+                                version: 3.1.0
+                              storage:
+                                files:
+                                  - contents:
+                                      source: >-
+                                        data:,-a%20always%2Cexit%20-F%20arch%3Db32%20-S%20chmod%20-F%20auid%3E%3D1000%20-F%20auid%21%3Dunset%20-F%20key%3Dperm_mod%0A-a%20always%2Cexit%20-F%20arch%3Db64%20-S%20chmod%20-F%20auid%3E%3D1000%20-F%20auid%21%3Dunset%20-F%20key%3Dperm_mod%0A
+                                    mode: 420
+                                    path: >-
+                                      /etc/audit/rules.d/75-chmod_dac_modification.rules
+                      outdated: {}
+          remediationAction: inform
+          severity: low
+  remediationAction: inform
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: PlacementBinding
+metadata:
+  name: binding-policy-compliance-remediation
+  namespace: etcd-config
+placementRef:
+  name: placement-policy-compliance-remediation
+  kind: PlacementRule
+  apiGroup: apps.open-cluster-management.io
+subjects:
+- name: policy-compliance-remediation
+  kind: Policy
+  apiGroup: policy.open-cluster-management.io
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: PlacementRule
+metadata:
+  name: placement-policy-compliance-remediation
+  namespace: etcd-config
+spec:
+  clusterConditions:
+  - status: "True"
+    type: ManagedClusterConditionAvailable
+  clusterSelector:
+    matchExpressions:
+      - {key: vendor, operator: In, values: ["OpenShift"]}
