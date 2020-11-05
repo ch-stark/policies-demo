@@ -24,9 +24,9 @@ spec:
                 metadata:
                   name: version
                 spec:
-                  channel: stable-4.5
+                  channel: fast-4.6
                   desiredUpdate:
-                    version: 4.5.16
+                    version: 4.6.1
                   upstream: 'https://api.openshift.com/api/upgrades_info/v1/graph'
               remediationAction: inform
           severity: high
