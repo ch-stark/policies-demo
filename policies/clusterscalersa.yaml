@@ -1,7 +1,7 @@
 kind: ServiceAccount
 apiVersion: v1
 metadata:
-  name: scaler
+  name: clusterscaler
   namespace: policies
 
 ---
@@ -12,7 +12,7 @@ metadata:
   name: cluster-admin-scaler-sa-crb
 subjects:
   - kind: ServiceAccount
-    name: scaler
+    name: clusterscaler
     namespace: policies
 roleRef:
   kind: ClusterRole
