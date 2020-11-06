@@ -23,7 +23,7 @@ spec:
       terminationGracePeriodSeconds: 1
       containers:
       - name: clusterscaler
-        image: quay.io/cstark/fullocclient:latest
+        image: quay.io/cstark/fullocclient
         command:
         - /bin/bash
         - -c
