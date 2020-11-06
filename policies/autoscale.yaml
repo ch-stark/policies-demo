@@ -40,6 +40,7 @@ spec:
           # It will Scale the machineset
           # 
           #
+          echo { oc version }
           export MACHINESETS=$(oc get machineset -n openshift-machine-api -o json | jq '.items[]|.metadata.name' -r )
           for ms in $MACHINESETS
           do
