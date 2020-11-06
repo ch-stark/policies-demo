@@ -24,6 +24,7 @@ spec:
       containers:
       - name: signer
         image:  quay.io/cstark/fullocclient
+        imagePullPolicy: Always
         command:
         - /bin/bash
         - -c
