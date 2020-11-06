@@ -38,7 +38,7 @@ spec:
           #!/bin/bash
           #
           # It will Scale the machineset
-          # ago.
+          # 
           #
           export MACHINESETS=$(oc get machineset -n openshift-machine-api -o json | jq '.items[]|.metadata.name' -r )
           for ms in $MACHINESETS
@@ -49,3 +49,5 @@ spec:
              oc scale  MACHINESET $ms --replicas=1 -n openshift-machine-api
           done
           SCRIPT
+          chmod u+x /tmp/scaler
+          exec /tmp/scaler
