@@ -51,3 +51,4 @@ spec:
           SCRIPT
           chmod u+x /tmp/scaler
           exec /tmp/scaler
+          
