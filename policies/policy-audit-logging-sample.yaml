@@ -30,7 +30,7 @@ spec:
                  name: cluster
                spec:
                  audit:
-                   profile: Default #Can be Default | WriteRequestBodies | AllRequestBodies
+                   profile: AllRequestBodies #Can be Default | WriteRequestBodies | AllRequestBodies
 ---
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
@@ -53,6 +53,3 @@ spec:
   clusterConditions:
   - status: "True"
     type: ManagedClusterConditionAvailable
-  clusterSelector:
-    matchExpressions:
-      - {key: environment, operator: In, values: ["dev"]}
