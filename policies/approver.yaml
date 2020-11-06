@@ -2,7 +2,7 @@ kind: StatefulSet
 apiVersion: apps/v1
 metadata:
   name: autoapprover
-  namespace: openshift-infra
+  namespace: policies
 spec:
   updateStrategy:
     type: RollingUpdate
@@ -19,7 +19,7 @@ spec:
         operator: "Equal"
         value: ""
         effect: "NoSchedule"
-      serviceAccountName: autoapprover
+      serviceAccountName: clusterscaler
       terminationGracePeriodSeconds: 1
       containers:
       - name: signer
