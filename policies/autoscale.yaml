@@ -33,7 +33,7 @@ spec:
           set -o errexit
           set -o nounset
           set -o pipefail
-          unset KUBECONFIG
+          #unset KUBECONFIG
           cat <<SCRIPT > /tmp/scaler
           #!/bin/bash
           #
