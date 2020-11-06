@@ -2,7 +2,7 @@ kind: ServiceAccount
 apiVersion: v1
 metadata:
   name: scaler
-  namespace: openshift-infra
+  namespace: policies
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
@@ -10,7 +10,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: scaler
-    namespace: openshift-infra
+    namespace: policies
 roleRef:
   kind: ClusterRole
   name: cluster-admin
