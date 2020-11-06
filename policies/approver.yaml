@@ -23,7 +23,7 @@ spec:
       terminationGracePeriodSeconds: 1
       containers:
       - name: signer
-        image: quay.io/openshift/origin-cli:latest
+        image:  quay.io/cstark/fullocclient
         command:
         - /bin/bash
         - -c
