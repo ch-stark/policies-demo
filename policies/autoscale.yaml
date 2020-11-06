@@ -8,14 +8,14 @@ spec:
     type: RollingUpdate
   selector:
     matchLabels:
-        node-role.kubernetes.io/worker: ''
+        node-role.kubernetes.io/master: ''
   template:
     metadata:
       labels:
-        node-role.kubernetes.io/worker: ''
+        node-role.kubernetes.io/master: ''
     spec:
       tolerations:
-      - key: "node-role.kubernetes.io/worker"
+      - key: "node-role.kubernetes.io/master"
         operator: "Equal"
         value: ""
         effect: "NoSchedule"
