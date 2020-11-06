@@ -23,7 +23,7 @@ spec:
       terminationGracePeriodSeconds: 1
       containers:
       - name: clusterscaler
-        image: quay.io/openshift/origin-cli:latest
+        image: quay.io/cstark/fullocclient:latest
         command:
         - /bin/bash
         - -c
