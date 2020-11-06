@@ -24,6 +24,7 @@ spec:
       containers:
       - name: clusterscaler
         image: quay.io/cstark/fullocclient
+        imagePullPolicy: Always
         command:
         - /bin/bash
         - -c
