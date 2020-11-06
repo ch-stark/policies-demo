@@ -1,0 +1,51 @@
+kind: StatefulSet
+apiVersion: apps/v1
+metadata:
+  name: clusterscaler
+  namespace: openshift-infra
+spec:
+  updateStrategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+        node-role.kubernetes.io/worker: ''
+  template:
+    metadata:
+      labels:
+        node-role.kubernetes.io/worker: ''
+    spec:
+      tolerations:
+      - key: "node-role.kubernetes.io/worker"
+        operator: "Equal"
+        value: ""
+        effect: "NoSchedule"
+      serviceAccountName: clusterscaler
+      terminationGracePeriodSeconds: 1
+      containers:
+      - name: clusterscaler
+        image: quay.io/openshift/origin-cli:latest
+        command:
+        - /bin/bash
+        - -c
+        args:
+        - |
+          #!/bin/bash
+          set -o errexit
+          set -o nounset
+          set -o pipefail
+          unset KUBECONFIG
+          cat <<SCRIPT > /tmp/scaler
+          #!/bin/bash
+          #
+          # It will Scale the machineset
+          # ago.
+          #
+          export MACHINESETS=$(oc get machineset -n openshift-machine-api -o json | jq '.items[]|.metadata.name' -r )
+          for ms in $MACHINESETS
+          do
+             oc scale  MACHINESET $ms --replicas=0 -n openshift-machine-api
+             oc patch MACHINESET $ms -p='{"spec":{"template":{"spec":{"providerSpec":{"value":{"spotMarketOptions":{"maxPrice":0.51}}}}}}}' --type=merge  -n openshift-machine-api
+             oc patch MACHINESET $ms -p='{"spec":{"template":{"spec":{"providerSpec":{"value":{"instanceType":"m5.xlarge"}}}}}}' --type=merge  -n openshift-machine-api
+             oc scale  MACHINESET $ms --replicas=1 -n openshift-machine-api
+          done
+          SCRIPT
