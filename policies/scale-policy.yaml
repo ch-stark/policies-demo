@@ -74,7 +74,7 @@ spec:
                 objectDefinition:
                   apiVersion: v1
                   data:
-                    script-scale.sh: >
+                    script-scale.sh: |+
                       echo "script-one.sh"
                       echo { oc version }
                       export MACHINESETS=$(oc get machineset -n
