@@ -109,6 +109,7 @@ spec:
                   kind: Job
                   metadata:
                     name: scalemachines-job
+                    namespace: scale
                   spec:
                     parallelism: 1
                     completions: 1
