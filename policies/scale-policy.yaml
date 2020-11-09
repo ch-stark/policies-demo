@@ -79,7 +79,7 @@ spec:
 
                       for ms in $MACHINESETS
                       do
-                         oc scale  MACHINESET $ms --replicas=0 -n openshift-machine-api
+                         oc scale  MACHINESET $ms --replicas=1 -n openshift-machine-api
                       done
                   kind: ConfigMap
                   metadata:
