@@ -32,7 +32,7 @@ spec:
                   subjects:
                     - kind: ServiceAccount
                       name: clusterscaler
-                      namespace: hive
+                      namespace: scale
                   roleRef:
                     kind: ClusterRole
                     name: cluster-admin
@@ -55,7 +55,7 @@ spec:
                   apiVersion: v1
                   metadata:
                     name: clusterscaler
-                    namespace: hive
+                    namespace: scale
       - objectDefinition:
           apiVersion: policy.open-cluster-management.io/v1
           kind: ConfigurationPolicy
