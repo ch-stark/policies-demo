@@ -153,6 +153,7 @@ subjects:
 - name: policy-scaling
   kind: Policy
   apiGroup: policy.open-cluster-management.io
+  
 ---
 apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
