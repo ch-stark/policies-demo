@@ -1,7 +1,7 @@
 apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:
-  name: policy-scaling
+  name: policy-test-scale
   namespace: hive
   annotations:
     policy.open-cluster-management.io/standards: NIST-CSF
@@ -143,14 +143,14 @@ spec:
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
 metadata:
-  name: binding-policy-scaling
+  name: binding-test-scale
   namespace: hive
 placementRef:
-  name: placement-policy-scaling
+  name: placement-test-scale
   kind: PlacementRule
   apiGroup: apps.open-cluster-management.io
 subjects:
-- name: policy-scaling
+- name: policy-test-scale
   kind: Policy
   apiGroup: policy.open-cluster-management.io
   
