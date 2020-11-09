@@ -88,6 +88,7 @@ spec:
                   kind: ConfigMap
                   metadata:
                     name: scalemachines-scripts
+                    namespace: scale
       - objectDefinition:
           apiVersion: policy.open-cluster-management.io/v1
           kind: ConfigurationPolicy
@@ -114,6 +115,7 @@ spec:
                     template:
                       metadata:
                         name: scalemachines-job
+                        namespace: scale
                       spec:
                         volumes:
                           - name: scalemachines-scripts-volume
