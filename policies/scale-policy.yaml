@@ -12,31 +12,31 @@ spec:
   disabled: false
   policy-templates:
       - objectDefinition:
-        apiVersion: policy.open-cluster-management.io/v1
-        kind: ConfigurationPolicy
-        metadata:
-          name: scale-crb
-        spec:
-          remediationAction: inform # will be overridden by remediationAction in parent policy
-          severity: low
-          namespaceSelector:
-            exclude: ["kube-*"]
-            include: ["default"]
-          object-templates:
-            - complianceType: musthave
-              objectDefinition:
-                kind: ClusterRoleBinding
-                apiVersion: rbac.authorization.k8s.io/v1
-                metadata:
-                  name: cluster-admin-approver-sa-crb  
-                subjects:
-                  - kind: ServiceAccount
-                    name: clusterscaler
-                    namespace: hive
-                roleRef:
-                  kind: ClusterRole
-                  name: cluster-admin
-                  apiGroup: rbac.authorization.k8s.io
+          apiVersion: policy.open-cluster-management.io/v1
+          kind: ConfigurationPolicy
+          metadata:
+            name: scale-crb
+          spec:
+            remediationAction: inform # will be overridden by remediationAction in parent policy
+            severity: low
+            namespaceSelector:
+              exclude: ["kube-*"]
+              include: ["default"]
+            object-templates:
+              - complianceType: musthave
+                objectDefinition:
+                  kind: ClusterRoleBinding
+                  apiVersion: rbac.authorization.k8s.io/v1
+                  metadata:
+                    name: cluster-admin-approver-sa-crb  
+                  subjects:
+                    - kind: ServiceAccount
+                      name: clusterscaler
+                      namespace: hive
+                  roleRef:
+                    kind: ClusterRole
+                    name: cluster-admin
+                    apiGroup: rbac.authorization.k8s.io
       - objectDefinition:
           apiVersion: policy.open-cluster-management.io/v1
           kind: ConfigurationPolicy
