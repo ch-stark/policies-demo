@@ -110,6 +110,7 @@ spec:
                     name: scalemachines-job
                     namespace: scale
                   spec:
+                    schedule: "* * * * *"
                     parallelism: 1
                     completions: 1
                     template:
