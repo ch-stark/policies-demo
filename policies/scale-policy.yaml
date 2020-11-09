@@ -76,7 +76,6 @@ spec:
                   data:
                     script-scale.sh: |+
                       echo "script-one.sh"
-                      echo { oc version }
                       export MACHINESETS=$(oc get machineset -n
                       openshift-machine-api -o json | jq '.items[]|.metadata.name'
                       -r )
