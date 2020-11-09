@@ -1,56 +1,128 @@
-kind: StatefulSet
-apiVersion: apps/v1
+apiVersion: policy.open-cluster-management.io/v1
+kind: Policy
 metadata:
-  name: clusterscaler
-  namespace: openshift-infra
+  name: policy-scaling
+  namespace: hive
+  annotations:
+    policy.open-cluster-management.io/standards: NIST-CSF
+    policy.open-cluster-management.io/categories: PR.IP Information Protection Processes and Procedures
+    policy.open-cluster-management.io/controls: PR.IP-1 Baseline Configuration
 spec:
-  updateStrategy:
-    type: RollingUpdate
-  selector:
-    matchLabels:
-        node-role.kubernetes.io/master: ''
-  template:
-    metadata:
-      labels:
-        node-role.kubernetes.io/master: ''
-    spec:
-      tolerations:
-      - key: "node-role.kubernetes.io/master"
-        operator: "Equal"
-        value: ""
-        effect: "NoSchedule"
-      serviceAccountName: clusterscaler
-      terminationGracePeriodSeconds: 1
-      containers:
-      - name: clusterscaler
-        image: quay.io/cstark/fullocclient
-        imagePullPolicy: Always
-        command:
-        - /bin/bash
-        - -c
-        args:
-        - |
-          #!/bin/bash
-          set -o errexit
-          set -o nounset
-          set -o pipefail
-          #unset KUBECONFIG
-          cat <<SCRIPT > /tmp/scaler
-          #!/bin/bash
-          #
-          # It will Scale the machineset
-          # 
-          #
-          echo { oc version }
-          export MACHINESETS=$(oc get machineset -n openshift-machine-api -o json | jq '.items[]|.metadata.name' -r )
-          for ms in $MACHINESETS
-          do
-             oc scale  MACHINESET $ms --replicas=0 -n openshift-machine-api
-             oc patch MACHINESET $ms -p='{"spec":{"template":{"spec":{"providerSpec":{"value":{"spotMarketOptions":{"maxPrice":0.52}}}}}}}' --type=merge  -n openshift-machine-api
-             oc patch MACHINESET $ms -p='{"spec":{"template":{"spec":{"providerSpec":{"value":{"instanceType":"m5.xlarge"}}}}}}' --type=merge  -n openshift-machine-api
-             oc scale  MACHINESET $ms --replicas=1 -n openshift-machine-api
-          done
-          SCRIPT
-          chmod u+x /tmp/scaler
-          exec /tmp/scaler
-          
+  remediationAction: inform
+  disabled: false
+  policy-templates:
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: policy-scale-cm
+        spec:
+          remediationAction: inform
+          severity: low
+          namespaceSelector:
+            exclude:
+              - kube-*
+            include:
+              - default
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: v1
+                data:
+                  script-scale.sh: >
+                    echo "script-one.sh"
+                    echo { oc version }
+                    export MACHINESETS=$(oc get machineset -n
+                    openshift-machine-api -o json | jq '.items[]|.metadata.name'
+                    -r )
+                    for ms in $MACHINESETS
+                      do
+                        oc scale  MACHINESET $ms --replicas=0 -n openshift-machine-api
+                        oc patch MACHINESET $ms -p='{"spec":{"template":{"spec":{"providerSpec":{"value":{"spotMarketOptions":{"maxPrice":0.52}}}}}}}' --type=merge  -n openshift-machine-api
+                        oc patch MACHINESET $ms -p='{"spec":{"template":{"spec":{"providerSpec":{"value":{"instanceType":"m5.xlarge"}}}}}}' --type=merge  -n openshift-machine-api
+                        oc scale  MACHINESET $ms --replicas=1 -n openshift-machine-api
+                      done  
+                kind: ConfigMap
+                metadata:
+                  name: scalemachines-scripts
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: scalemachines-job
+        spec:
+          remediationAction: inform
+          severity: low
+          namespaceSelector:
+            exclude:
+              - kube-*
+            include:
+              - default
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: batch/v1
+                kind: Job
+                metadata:
+                  name: scalemachines-job
+                spec:
+                  parallelism: 1
+                  completions: 1
+                  template:
+                    metadata:
+                      name: scalemachines-job
+                    spec:
+                      volumes:
+                        - name: scalemachines-scripts-volume
+                          configMap:
+                            name: scalemachines-scripts
+                      serviceAccountName: clusterscaler
+                      containers:
+                        - name: scalemachines-job
+                          image: 'quay.io/cstark/fullocclient:latest'
+                          volumeMounts:
+                            - mountPath: /scalemachines-scripts
+                              name: scalemachines-scripts-volume
+                          env:
+                            - name: HOME
+                              value: /tmp
+                          command:
+                            - /bin/sh
+                            - '-c'
+                            - |
+                              echo "scripts in /scalemachines-scripts"
+                              ls -lh /scalemachines-scripts
+                              echo "copy scripts to /tmp"
+                              cp /scalemachines-scripts/*.sh /tmp
+                              echo "apply 'chmod +x' to /tmp/*.sh"
+                              chmod +x /tmp/*.sh
+                              echo "execute script sh now"
+                              /tmp/script-scale.sh
+                      restartPolicy: Never
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: PlacementBinding
+metadata:
+  name: binding-policy-scaling
+  namespace: hive
+placementRef:
+  name: placement-policy-scaling
+  kind: PlacementRule
+  apiGroup: apps.open-cluster-management.io
+subjects:
+- name: policy-scaling
+  kind: Policy
+  apiGroup: policy.open-cluster-management.io
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: PlacementRule
+metadata:
+  name: placement-policy-scaling
+  namespace: hive
+spec:
+  clusterConditions:
+  - status: "True"
+    type: ManagedClusterConditionAvailable
+  clusterSelector:
+    matchExpressions:
+      - {key: vendor, operator: In, values: ["OpenShift"]}
