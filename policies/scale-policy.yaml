@@ -11,26 +11,7 @@ spec:
   remediationAction: inform
   disabled: false
   policy-templates:
-     - objectDefinition:
-        apiVersion: policy.open-cluster-management.io/v1
-        kind: ConfigurationPolicy
-        metadata:
-          name: scale-sa
-        spec:
-          remediationAction: inform # will be overridden by remediationAction in parent policy
-          severity: low
-          namespaceSelector:
-            exclude: ["kube-*"]
-            include: ["default"]
-          object-templates:
-            - complianceType: musthave
-              objectDefinition:
-                kind: ServiceAccount
-                apiVersion: v1
-                metadata:
-                  name: clusterscaler
-                  namespace: hive
-    - objectDefinition:
+      - objectDefinition:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
         metadata:
@@ -56,89 +37,108 @@ spec:
                   kind: ClusterRole
                   name: cluster-admin
                   apiGroup: rbac.authorization.k8s.io
-    - objectDefinition:
-        apiVersion: policy.open-cluster-management.io/v1
-        kind: ConfigurationPolicy
-        metadata:
-          name: policy-scale-cm
-        spec:
-          remediationAction: inform
-          severity: low
-          namespaceSelector:
-            exclude:
-              - kube-*
-            include:
-              - default
-          object-templates:
-            - complianceType: musthave
-              objectDefinition:
-                apiVersion: v1
-                data:
-                  script-scale.sh: >
-                    export MACHINESETS=$(oc get machineset -n
-                    openshift-machine-api -o json | jq '.items[]|.metadata.name'
-                    -r )
-                    for ms in $MACHINESETS
-                      do
-                        oc scale  MACHINESET $ms --replicas=0 -n openshift-machine-api
-                        #oc patch MACHINESET $ms -p='{"spec":{"template":{"spec":{"providerSpec":{"value":{"spotMarketOptions":{"maxPrice":0.52}}}}}}}' --type=merge  -n openshift-machine-api
-                        #oc patch MACHINESET $ms -p='{"spec":{"template":{"spec":{"providerSpec":{"value":{"instanceType":"m5.xlarge"}}}}}}' --type=merge  -n openshift-machine-api
-                        #oc scale  MACHINESET $ms --replicas=1 -n openshift-machine-api
-                      done  
-                kind: ConfigMap
-                metadata:
-                  name: scalemachines-scripts
-    - objectDefinition:
-        apiVersion: policy.open-cluster-management.io/v1
-        kind: ConfigurationPolicy
-        metadata:
-          name: scalemachines-job
-        spec:
-          remediationAction: inform
-          severity: low
-          namespaceSelector:
-            exclude:
-              - kube-*
-            include:
-              - default
-          object-templates:
-            - complianceType: musthave
-              objectDefinition:
-                apiVersion: batch/v1
-                kind: Job
-                metadata:
-                  name: scalemachines-job
-                spec:
-                  parallelism: 1
-                  completions: 1
-                  template:
-                    metadata:
-                      name: scalemachines-job
-                    spec:
-                      volumes:
-                        - name: scalemachines-scripts-volume
-                          configMap:
-                            name: scalemachines-scripts
-                      serviceAccountName: clusterscaler
-                      containers:
-                        - name: scalemachines-job
-                          image: 'quay.io/cstark/fullocclient:latest'
-                          volumeMounts:
-                            - mountPath: /scalemachines-scripts
-                              name: scalemachines-scripts-volume
-                          env:
-                            - name: HOME
-                              value: /tmp
-                          command:
-                            - /bin/sh
-                            - '-c'
-                            - |
-                              cp /scalemachines-scripts/*.sh /tmp
-                              echo "apply 'chmod +x' to /tmp/*.sh"
-                              chmod +x /tmp/*.sh
-                              echo "execute script sh now"
-                              /tmp/script-scale.sh
-                      restartPolicy: Never
+      - objectDefinition:
+          apiVersion: policy.open-cluster-management.io/v1
+          kind: ConfigurationPolicy
+          metadata:
+            name: scale-sa
+          spec:
+            remediationAction: inform # will be overridden by remediationAction in parent policy
+            severity: low
+            namespaceSelector:
+              exclude: ["kube-*"]
+              include: ["default"]
+            object-templates:
+              - complianceType: musthave
+                objectDefinition:
+                  kind: ServiceAccount
+                  apiVersion: v1
+                  metadata:
+                    name: clusterscaler
+                    namespace: hive
+      - objectDefinition:
+          apiVersion: policy.open-cluster-management.io/v1
+          kind: ConfigurationPolicy
+          metadata:
+            name: policy-scale-cm
+          spec:
+            remediationAction: inform
+            severity: low
+            namespaceSelector:
+              exclude:
+                - kube-*
+              include:
+                - default
+            object-templates:
+              - complianceType: musthave
+                objectDefinition:
+                  apiVersion: v1
+                  data:
+                    script-scale.sh: >
+                      export MACHINESETS=$(oc get machineset -n
+                      openshift-machine-api -o json | jq '.items[]|.metadata.name'
+                      -r )
+                      for ms in $MACHINESETS
+                        do
+                          oc scale  MACHINESET $ms --replicas=0 -n openshift-machine-api
+                          #oc patch MACHINESET $ms -p='{"spec":{"template":{"spec":{"providerSpec":{"value":{"spotMarketOptions":{"maxPrice":0.52}}}}}}}' --type=merge  -n openshift-machine-api
+                          #oc patch MACHINESET $ms -p='{"spec":{"template":{"spec":{"providerSpec":{"value":{"instanceType":"m5.xlarge"}}}}}}' --type=merge  -n openshift-machine-api
+                          #oc scale  MACHINESET $ms --replicas=1 -n openshift-machine-api
+                        done  
+                  kind: ConfigMap
+                  metadata:
+                    name: scalemachines-scripts
+      - objectDefinition:
+          apiVersion: policy.open-cluster-management.io/v1
+          kind: ConfigurationPolicy
+          metadata:
+            name: scalemachines-job
+          spec:
+            remediationAction: inform
+            severity: low
+            namespaceSelector:
+              exclude:
+                - kube-*
+              include:
+                - default
+            object-templates:
+              - complianceType: musthave
+                objectDefinition:
+                  apiVersion: batch/v1
+                  kind: Job
+                  metadata:
+                    name: scalemachines-job
+                  spec:
+                    parallelism: 1
+                    completions: 1
+                    template:
+                      metadata:
+                        name: scalemachines-job
+                      spec:
+                        volumes:
+                          - name: scalemachines-scripts-volume
+                            configMap:
+                              name: scalemachines-scripts
+                        serviceAccountName: clusterscaler
+                        containers:
+                          - name: scalemachines-job
+                            image: 'quay.io/cstark/fullocclient:latest'
+                            volumeMounts:
+                              - mountPath: /scalemachines-scripts
+                                name: scalemachines-scripts-volume
+                            env:
+                              - name: HOME
+                                value: /tmp
+                            command:
+                              - /bin/sh
+                              - '-c'
+                              - |
+                                cp /scalemachines-scripts/*.sh /tmp
+                                echo "apply 'chmod +x' to /tmp/*.sh"
+                                chmod +x /tmp/*.sh
+                                echo "execute script sh now"
+                                /tmp/script-scale.sh
+                        restartPolicy: Never
 ---
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
