@@ -75,8 +75,8 @@ spec:
                   apiVersion: v1
                   data:
                     script-scale.sh: >
+                      oc version
                       export MACHINESETS=$(oc get machineset -n openshift-machine-api -o json | jq '.items[]|.metadata.name' -r )
-
                       for ms in $MACHINESETS
                       do
                         oc scale  MACHINESET $ms --replicas=1 -n openshift-machine-api
