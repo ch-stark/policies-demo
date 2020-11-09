@@ -76,12 +76,8 @@ spec:
                   data:
                     script-scale.sh: >
                       export MACHINESETS=$(oc get machineset -n openshift-machine-api -o json | jq '.items[]|.metadata.name' -r )
-
                       for ms in $MACHINESETS
                       do
-                         oc scale  MACHINESET $ms --replicas=0 -n openshift-machine-api
-                         oc patch MACHINESET $ms -p='{"spec":{"template":{"spec":{"providerSpec":{"value":{"spotMarketOptions":{"maxPrice":0.51}}}}}}}' --type=merge  -n openshift-machine-api
-                         oc patch MACHINESET $ms -p='{"spec":{"template":{"spec":{"providerSpec":{"value":{"instanceType":"m5.xlarge"}}}}}}' --type=merge  -n openshift-machine-api
                          oc scale  MACHINESET $ms --replicas=0 -n openshift-machine-api
                       done
                   kind: ConfigMap
@@ -124,7 +120,7 @@ spec:
                         serviceAccountName: clusterscaler
                         containers:
                           - name: scalemachines-job
-                            image: 'quay.io/cstark/fullocclient:latest'
+                            image: 'quay.io/cstark/fullocclient'
                             volumeMounts:
                               - mountPath: /scalemachines-scripts
                                 name: scalemachines-scripts-volume
