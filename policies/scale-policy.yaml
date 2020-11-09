@@ -158,7 +158,7 @@ subjects:
 apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
 metadata:
-  name: placement-policy-scaling
+  name: placement-test-scale
   namespace: policies
 spec:
   clusterConditions:
