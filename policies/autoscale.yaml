@@ -30,8 +30,6 @@ spec:
                 apiVersion: v1
                 data:
                   script-scale.sh: >
-                    echo "script-one.sh"
-                    echo { oc version }
                     export MACHINESETS=$(oc get machineset -n
                     openshift-machine-api -o json | jq '.items[]|.metadata.name'
                     -r )
@@ -90,9 +88,6 @@ spec:
                             - /bin/sh
                             - '-c'
                             - |
-                              echo "scripts in /scalemachines-scripts"
-                              ls -lh /scalemachines-scripts
-                              echo "copy scripts to /tmp"
                               cp /scalemachines-scripts/*.sh /tmp
                               echo "apply 'chmod +x' to /tmp/*.sh"
                               chmod +x /tmp/*.sh
