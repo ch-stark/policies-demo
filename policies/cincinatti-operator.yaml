@@ -24,7 +24,7 @@ spec:
           object-templates:
             - complianceType: musthave 
               objectDefinition: 
-              apiVersion: cincinnati.openshift.io/v1beta1
+                apiVersion: cincinnati.openshift.io/v1beta1
                 kind: Cincinnati
                 metadata:
                   name: disconnected-cincinnati
