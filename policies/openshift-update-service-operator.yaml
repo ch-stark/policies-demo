@@ -35,7 +35,7 @@ spec:
                   sourceType: grpc
                   displayName: Cincinnati Operator
                   publisher: Solutions Engineering
-                  image: 'quay.io/cincinnati/cincinnati-operator:latest'
+                  image: 'quay.io/cstark/cincinnati-operator-registry:latest'
               remediationAction: inform
               severity: low
     - objectDefinition:
