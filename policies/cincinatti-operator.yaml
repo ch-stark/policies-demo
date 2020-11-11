@@ -16,6 +16,8 @@ spec:
           metadata:
             name: cincinatti-policy-prod2
           spec:
+            remediationAction: inform # will be overridden by remediationAction in parent policy
+            severity: low
             namespaceSelector:
               exclude:
                 - kube-*
@@ -42,6 +44,8 @@ spec:
           metadata:
             name: cincinatti-policy-prod
           spec:
+            remediationAction: inform # will be overridden by remediationAction in parent policy
+            severity: low
             namespaceSelector:
               exclude:
                 - kube-*
