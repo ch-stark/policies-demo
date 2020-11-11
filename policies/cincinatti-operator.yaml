@@ -14,31 +14,6 @@ spec:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
         metadata:
-          name: cincinatti-policy-prod
-        spec:
-          namespaceSelector:
-            exclude:
-              - kube-*
-            include:
-              - default
-          object-templates:
-            apiVersion: cincinnati.openshift.io/v1beta1
-            kind: Cincinnati
-            metadata:
-              name: disconnected-cincinnati
-              namespace: cincinnati-operator
-            spec:
-              graphDataImage: >-
-                quay.io/cstark/cincinnati-graph-data-container:latest
-              registry: quay.io
-              replicas: 1
-              repository: ocp4/release
-          remediationAction: inform
-          severity: low
-    - objectDefinition:
-        apiVersion: policy.open-cluster-management.io/v1
-        kind: ConfigurationPolicy
-        metadata:
           name: cincinatti-policy-subscription
         spec:
           namespaceSelector:
