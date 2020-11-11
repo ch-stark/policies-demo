@@ -34,8 +34,8 @@ spec:
                 registry: quay.io
                 replicas: 1
                 repository: ocp4/release
-            remediationAction: inform
-            severity: low
+              remediationAction: inform
+              severity: low
     - objectDefinition:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
