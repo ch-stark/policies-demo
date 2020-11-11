@@ -30,7 +30,7 @@ spec:
             spec:
               graphDataImage: >-
                 quay.io/cstark/cincinnati-graph-data-container:latest
-              registry: "quay.io"
+              registry: quay.io
               replicas: 1
               repository: ocp4/release
           remediationAction: inform
