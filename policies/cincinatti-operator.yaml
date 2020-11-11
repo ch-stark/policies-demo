@@ -130,31 +130,7 @@ spec:
                     targetNamespaces:
                       - cincinnati-operator
             remediationAction: inform
-            severity: low
-      - objectDefinition:
-          apiVersion: policy.open-cluster-management.io/v1
-          kind: ConfigurationPolicy
-          metadata:
-            name: cincinatti-policy-patch-imageconfig
-          spec:
-            namespaceSelector:
-              exclude:
-                - kube-*
-              include:
-                - default
-            object-templates:
-              - complianceType: musthave
-                objectDefinition: 
-                  apiVersion: config.openshift.io/v1
-                  kind: Image
-                  metadata:
-                    annotations: null
-                    name: cluster
-                  spec:
-                    additionalTrustedCA:
-                      name: trusted-ca
-          severity: high
-  remediationAction: enforce
+        remediationAction: enforce
 ---
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
