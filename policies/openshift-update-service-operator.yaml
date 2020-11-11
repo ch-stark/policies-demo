@@ -81,7 +81,7 @@ spec:
                     sourceType: grpc
                     displayName: Cincinnati Operator
                     publisher: Solutions Engineering
-                    image: 'quay.io/cstark/cincinnati-operator-registry:latest'
+                    image: 'quay.io/cstark/cincinnati-operator-registry:v1'
                 remediationAction: inform
                 severity: low
       - objectDefinition:
