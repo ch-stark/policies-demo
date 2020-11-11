@@ -28,6 +28,7 @@ spec:
                   apiVersion: operators.coreos.com/v1alpha1
                   metadata:
                     name: cincinnati-catalog
+                    namespace: openshift-marketplace
                   spec:
                     sourceType: grpc
                     displayName: Cincinnati Operator
@@ -103,7 +104,7 @@ spec:
                     name: cincinnati-operator
                     channel: alpha
                     installPlanApproval: Automatic
-                    source: redhat-operators
+                    source: cincinnati-catalog
                     sourceNamespace: openshift-marketplace
             remediationAction: inform
             severity: low
