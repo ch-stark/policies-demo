@@ -14,6 +14,32 @@ spec:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
         metadata:
+          name: cincinatti-policy-prod
+        spec:
+          namespaceSelector:
+            exclude:
+              - kube-*
+            include:
+              - default
+          object-templates:
+          - complianceType: musthave 
+            apiVersion: cincinnati.openshift.io/v1beta1
+            kind: Cincinnati
+            metadata:
+              name: disconnected-cincinnati
+              namespace: cincinnati-operator
+            spec:
+              graphDataImage: >-
+                quay.io/cstark/cincinnati-graph-data-container:latest
+              registry: quay.io
+              replicas: 1
+              repository: ocp4/release
+          remediationAction: inform
+          severity: low
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
           name: policy-namespace-1-prod
         spec:
           remediationAction: inform # will be overridden by remediationAction in parent policy
