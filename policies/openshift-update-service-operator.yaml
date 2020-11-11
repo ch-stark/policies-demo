@@ -54,7 +54,7 @@ spec:
                   kind: ServiceAccount
                   apiVersion: v1
                   metadata:
-                    name: clusterscaler
+                    name: updateservice
                     namespace: cincinnati-operator
       - objectDefinition:
           apiVersion: policy.open-cluster-management.io/v1
