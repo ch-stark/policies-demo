@@ -57,136 +57,134 @@ spec:
                     name: clusterscaler
                     namespace: cincinnati-operator
   
-  
-  
-    - objectDefinition:
-        apiVersion: policy.open-cluster-management.io/v1
-        kind: ConfigurationPolicy
-        metadata:
-          name: cincinatti-policy-prod2
-        spec:
+      - objectDefinition:
+          apiVersion: policy.open-cluster-management.io/v1
+          kind: ConfigurationPolicy
+          metadata:
+            name: cincinatti-policy-prod2
+          spec:
+            remediationAction: inform
+            severity: low
+            namespaceSelector:
+              exclude:
+                - kube-*
+              include:
+                - default
+            object-templates:
+              - complianceType: musthave
+                objectDefinition:
+                  kind: CatalogSource
+                  apiVersion: operators.coreos.com/v1alpha1
+                  metadata:
+                    name: cincinnati-catalog
+                    namespace: openshift-marketplace
+                  spec:
+                    sourceType: grpc
+                    displayName: Cincinnati Operator
+                    publisher: Solutions Engineering
+                    image: 'quay.io/cstark/cincinnati-operator-registry:latest'
+                remediationAction: inform
+                severity: low
+      - objectDefinition:
+          apiVersion: policy.open-cluster-management.io/v1
+          kind: ConfigurationPolicy
+          metadata:
+            name: cincinatti-policy-prod
+          spec:
+            remediationAction: inform
+            severity: low
+            namespaceSelector:
+              exclude:
+                - kube-*
+              include:
+                - default
+            object-templates:
+              - complianceType: musthave
+                objectDefinition:
+                  apiVersion: cincinnati.openshift.io/v1beta1
+                  kind: Cincinnati
+                  metadata:
+                    name: disconnected-cincinnati
+                    namespace: cincinnati-operator
+                  spec:
+                    graphDataImage: 'quay.io/cstark/cincinnati-graph-data-container:latest'
+                    registry: quay.io
+                    replicas: 1
+                    repository: ocp4/release
+                remediationAction: inform
+                severity: low
+      - objectDefinition:
+          apiVersion: policy.open-cluster-management.io/v1
+          kind: ConfigurationPolicy
+          metadata:
+            name: policy-namespace-1-prod
+          spec:
+            remediationAction: inform
+            severity: low
+            namespaceSelector:
+              exclude:
+                - kube-*
+              include:
+                - default
+            object-templates:
+              - complianceType: musthave
+                objectDefinition:
+                  kind: Namespace
+                  apiVersion: v1
+                  metadata:
+                    name: cincinnati-operator
+                remediationAction: inform
+                severity: low
+      - objectDefinition:
+          apiVersion: policy.open-cluster-management.io/v1
+          kind: ConfigurationPolicy
+          metadata:
+            name: cincinatti-policy-subscription
+          spec:
+            namespaceSelector:
+              exclude:
+                - kube-*
+              include:
+                - default
+            object-templates:
+              - complianceType: musthave
+                objectDefinition:
+                  apiVersion: operators.coreos.com/v1alpha1
+                  kind: Subscription
+                  metadata:
+                    name: cincinnati-subscription
+                    namespace: cincinnati-operator
+                  spec:
+                    name: cincinnati-operator
+                    channel: alpha
+                    installPlanApproval: Automatic
+                    source: cincinnati-catalog
+                    sourceNamespace: openshift-marketplace
+            remediationAction: inform
+            severity: low
+      - objectDefinition:
+          apiVersion: policy.open-cluster-management.io/v1
+          kind: ConfigurationPolicy
+          metadata:
+            name: cincinatti-policy-operatorgroup
+          spec:
+            namespaceSelector:
+              exclude:
+                - kube-*
+              include:
+                - default
+            object-templates:
+              - complianceType: musthave
+                objectDefinition:
+                  apiVersion: operators.coreos.com/v1
+                  kind: OperatorGroup
+                  metadata:
+                    name: cincinnati-operatorgroup
+                    namespace: cincinnati-operator
+                  spec:
+                    targetNamespaces:
+                      - cincinnati-operator
           remediationAction: inform
-          severity: low
-          namespaceSelector:
-            exclude:
-              - kube-*
-            include:
-              - default
-          object-templates:
-            - complianceType: musthave
-              objectDefinition:
-                kind: CatalogSource
-                apiVersion: operators.coreos.com/v1alpha1
-                metadata:
-                  name: cincinnati-catalog
-                  namespace: openshift-marketplace
-                spec:
-                  sourceType: grpc
-                  displayName: Cincinnati Operator
-                  publisher: Solutions Engineering
-                  image: 'quay.io/cstark/cincinnati-operator-registry:latest'
-              remediationAction: inform
-              severity: low
-    - objectDefinition:
-        apiVersion: policy.open-cluster-management.io/v1
-        kind: ConfigurationPolicy
-        metadata:
-          name: cincinatti-policy-prod
-        spec:
-          remediationAction: inform
-          severity: low
-          namespaceSelector:
-            exclude:
-              - kube-*
-            include:
-              - default
-          object-templates:
-            - complianceType: musthave
-              objectDefinition:
-                apiVersion: cincinnati.openshift.io/v1beta1
-                kind: Cincinnati
-                metadata:
-                  name: disconnected-cincinnati
-                  namespace: cincinnati-operator
-                spec:
-                  graphDataImage: 'quay.io/cstark/cincinnati-graph-data-container:latest'
-                  registry: quay.io
-                  replicas: 1
-                  repository: ocp4/release
-              remediationAction: inform
-              severity: low
-    - objectDefinition:
-        apiVersion: policy.open-cluster-management.io/v1
-        kind: ConfigurationPolicy
-        metadata:
-          name: policy-namespace-1-prod
-        spec:
-          remediationAction: inform
-          severity: low
-          namespaceSelector:
-            exclude:
-              - kube-*
-            include:
-              - default
-          object-templates:
-            - complianceType: musthave
-              objectDefinition:
-                kind: Namespace
-                apiVersion: v1
-                metadata:
-                  name: cincinnati-operator
-              remediationAction: inform
-              severity: low
-    - objectDefinition:
-        apiVersion: policy.open-cluster-management.io/v1
-        kind: ConfigurationPolicy
-        metadata:
-          name: cincinatti-policy-subscription
-        spec:
-          namespaceSelector:
-            exclude:
-              - kube-*
-            include:
-              - default
-          object-templates:
-            - complianceType: musthave
-              objectDefinition:
-                apiVersion: operators.coreos.com/v1alpha1
-                kind: Subscription
-                metadata:
-                  name: cincinnati-subscription
-                  namespace: cincinnati-operator
-                spec:
-                  name: cincinnati-operator
-                  channel: alpha
-                  installPlanApproval: Automatic
-                  source: cincinnati-catalog
-                  sourceNamespace: openshift-marketplace
-          remediationAction: inform
-          severity: low
-    - objectDefinition:
-        apiVersion: policy.open-cluster-management.io/v1
-        kind: ConfigurationPolicy
-        metadata:
-          name: cincinatti-policy-operatorgroup
-        spec:
-          namespaceSelector:
-            exclude:
-              - kube-*
-            include:
-              - default
-          object-templates:
-            - complianceType: musthave
-              objectDefinition:
-                apiVersion: operators.coreos.com/v1
-                kind: OperatorGroup
-                metadata:
-                  name: cincinnati-operatorgroup
-                  namespace: cincinnati-operator
-                spec:
-                  targetNamespaces:
-                    - cincinnati-operator
-        remediationAction: inform
   remediationAction: enforce
 ---
 apiVersion: policy.open-cluster-management.io/v1
