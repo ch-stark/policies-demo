@@ -10,6 +10,31 @@ metadata:
 spec:
   disabled: false
   policy-templates:
+      - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: cincinatti-policy-prod2
+        spec:
+          namespaceSelector:
+            exclude:
+              - kube-*
+            include:
+              - default
+          object-templates:
+            - complianceType: musthave 
+              objectDefinition: 
+                kind: CatalogSource
+                apiVersion: operators.coreos.com/v1alpha1
+                metadata:
+                  name: cincinnati-catalog
+                spec:
+                  sourceType: grpc
+                  displayName: Cincinnati Operator
+                  publisher: Solutions Engineering
+                  image: quay.io/cincinnati/cincinnati-operator:latest
+                remediationAction: inform
+                severity: low
     - objectDefinition:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
