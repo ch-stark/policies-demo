@@ -1,7 +1,7 @@
 apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:
-  name: policy-cincinatti-operator
+  name: openshift-update-service-operator
   namespace: default
   annotations:
     policy.open-cluster-management.io/standards: NIST-CSF
@@ -150,7 +150,7 @@ placementRef:
   kind: PlacementRule
   apiGroup: apps.open-cluster-management.io
 subjects:
-- name: policy-cincinatti-operator
+- name: openshift-update-service-operator
   kind: Policy
   apiGroup: policy.open-cluster-management.io
 ---
