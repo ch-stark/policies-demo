@@ -153,7 +153,8 @@ spec:
                   spec:
                     additionalTrustedCA:
                       name: trusted-ca
-       remediationAction: enforce
+          severity: high
+  remediationAction: enforce
 ---
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
