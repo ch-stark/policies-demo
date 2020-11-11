@@ -137,7 +137,7 @@ spec:
                     targetNamespaces:
                       - cincinnati-operator
             remediationAction: inform
-        remediationAction: enforce
+      remediationAction: enforce
 ---
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
