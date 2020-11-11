@@ -81,8 +81,6 @@ spec:
                   apiVersion: v1
                   metadata:
                     name: cincinnati-operator
-            remediationAction: inform
-            severity: low
       - objectDefinition:
           apiVersion: policy.open-cluster-management.io/v1
           kind: ConfigurationPolicy
