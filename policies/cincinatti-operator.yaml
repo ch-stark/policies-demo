@@ -34,8 +34,8 @@ spec:
                     displayName: Cincinnati Operator
                     publisher: Solutions Engineering
                     image: quay.io/cincinnati/cincinnati-operator:latest
-                  remediationAction: inform
-                  severity: low
+            remediationAction: inform
+            severity: low
       - objectDefinition:
           apiVersion: policy.open-cluster-management.io/v1
           kind: ConfigurationPolicy
@@ -81,6 +81,8 @@ spec:
                   apiVersion: v1
                   metadata:
                     name: cincinnati-operator
+            remediationAction: inform
+            severity: low                   
       - objectDefinition:
           apiVersion: policy.open-cluster-management.io/v1
           kind: ConfigurationPolicy
