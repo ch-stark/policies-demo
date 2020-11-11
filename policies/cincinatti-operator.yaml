@@ -29,7 +29,7 @@ spec:
               namespace: cincinnati-operator
             spec:
               graphDataImage: >-
-                bm-cluster-1-hyper.e2e.bos.redhat.com:5000/cincinnati/cincinnati-graph-data-container:latest
+                quay.io/cstark/cincinnati-graph-data-container:latest
               registry: 'bm-cluster-1-hyper.e2e.bos.redhat.com:5000'
               replicas: 1
               repository: ocp4/release
