@@ -34,6 +34,7 @@ spec:
                 subjects:
                   - kind: User
                     name: user1
+                    apiGroup: rbac.authorization.k8s.io
                 roleRef:
                   kind: ClusterRole
                   name: cluster-admin
@@ -61,6 +62,7 @@ spec:
                 subjects:
                   - kind: User
                     name: user2
+                    apiGroup: rbac.authorization.k8s.io
                 roleRef:
                   kind: ClusterRole
                   name: cluster-admin
@@ -88,6 +90,7 @@ spec:
                 subjects:
                   - kind: User
                     name: user3
+                    apiGroup: rbac.authorization.k8s.io
                 roleRef:
                   kind: ClusterRole
                   name: cluster-admin
@@ -115,6 +118,7 @@ spec:
                 subjects:
                   - kind: User
                     name: user4
+                    apiGroup: rbac.authorization.k8s.io
                 roleRef:
                   kind: ClusterRole
                   name: cluster-admin
@@ -142,6 +146,7 @@ spec:
                 subjects:
                   - kind: User
                     name: user5
+                    apiGroup: rbac.authorization.k8s.io
                 roleRef:
                   kind: ClusterRole
                   name: cluster-admin
