@@ -32,7 +32,7 @@ spec:
                 metadata:
                   name: cluster-admin-httpuser
                 subjects:
-                  - kind: user
+                  - kind: User
                     name: user1
                 roleRef:
                   kind: ClusterRole
@@ -59,7 +59,7 @@ spec:
                 metadata:
                   name: cluster-admin-httpuser
                 subjects:
-                  - kind: user
+                  - kind: User
                     name: user2
                 roleRef:
                   kind: ClusterRole
@@ -86,7 +86,7 @@ spec:
                 metadata:
                   name: cluster-admin-httpuser
                 subjects:
-                  - kind: user
+                  - kind: User
                     name: user3
                 roleRef:
                   kind: ClusterRole
@@ -113,7 +113,7 @@ spec:
                 metadata:
                   name: cluster-admin-httpuser
                 subjects:
-                  - kind: user
+                  - kind: User
                     name: user4
                 roleRef:
                   kind: ClusterRole
@@ -140,7 +140,7 @@ spec:
                 metadata:
                   name: cluster-admin-httpuser
                 subjects:
-                  - kind: user
+                  - kind: User
                     name: user5
                 roleRef:
                   kind: ClusterRole
