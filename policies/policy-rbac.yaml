@@ -30,7 +30,7 @@ spec:
                 kind: ClusterRoleBinding
                 apiVersion: rbac.authorization.k8s.io/v1
                 metadata:
-                  name: cluster-admin-httpuser
+                  name: cluster-admin-httpuser1
                 subjects:
                   - kind: User
                     name: user1
@@ -58,7 +58,7 @@ spec:
                 kind: ClusterRoleBinding
                 apiVersion: rbac.authorization.k8s.io/v1
                 metadata:
-                  name: cluster-admin-httpuser
+                  name: cluster-admin-httpuser2
                 subjects:
                   - kind: User
                     name: user2
@@ -86,7 +86,7 @@ spec:
                 kind: ClusterRoleBinding
                 apiVersion: rbac.authorization.k8s.io/v1
                 metadata:
-                  name: cluster-admin-httpuser
+                  name: cluster-admin-httpuser3
                 subjects:
                   - kind: User
                     name: user3
@@ -114,7 +114,7 @@ spec:
                 kind: ClusterRoleBinding
                 apiVersion: rbac.authorization.k8s.io/v1
                 metadata:
-                  name: cluster-admin-httpuser
+                  name: cluster-admin-httpuser4
                 subjects:
                   - kind: User
                     name: user4
@@ -142,7 +142,7 @@ spec:
                 kind: ClusterRoleBinding
                 apiVersion: rbac.authorization.k8s.io/v1
                 metadata:
-                  name: cluster-admin-httpuser
+                  name: cluster-admin-httpuser5
                 subjects:
                   - kind: User
                     name: user5
@@ -171,7 +171,7 @@ spec:
                 kind: ClusterRoleBinding
                 apiVersion: rbac.authorization.k8s.io/v1
                 metadata:
-                  name: cluster-admin-httpuser
+                  name: cluster-admin-httpgroup1
                 subjects:
                   - kind: Group
                     name: group1
