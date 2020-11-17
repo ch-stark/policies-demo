@@ -70,7 +70,7 @@ metadata:
   name: binding-policy-enableClusterLogForwarder
   namespace: 
 placementRef:
-  name: placement-policy-enableUserWorkload
+  name: placement-policy-enableClusterLogForwarder
   kind: PlacementRule
   apiGroup: apps.open-cluster-management.io
 subjects:
