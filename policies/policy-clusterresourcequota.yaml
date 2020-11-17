@@ -1,0 +1,117 @@
+apiVersion: policy.open-cluster-management.io/v1
+kind: Policy
+metadata:
+  name: policy-clusterresourcequota
+  namespace: 
+  annotations:
+    policy.open-cluster-management.io/standards: NIST-CSF
+    policy.open-cluster-management.io/categories: PR.IP Information Protection Processes and Procedures
+    policy.open-cluster-management.io/controls: PR.IP-1 Baseline Configuration
+spec:
+  remediationAction: inform
+  disabled: false
+  policy-templates:
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: policy-crq-user
+        spec:
+          remediationAction: inform
+          severity: low
+          namespaceSelector:
+            exclude:
+              - kube-*
+            include:
+              - default
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: v1
+                kind: ClusterResourceQuota
+                metadata:
+                  name: for-user
+                spec:
+                  quota: 
+                    hard:
+                      pods: "10"
+                      secrets: "20"
+                  selector:
+                    annotations: 
+                      openshift.io/requester: <user_name>
+                    labels: null 
+                status:
+                  namespaces: 
+                  - namespace: ns-one
+                    status:
+                      hard:
+                        pods: "10"
+                        secrets: "20"
+                      used:
+                        pods: "1"
+                        secrets: "9"
+                  total: 
+                    hard:
+                      pods: "10"
+                      secrets: "20"
+                    used:
+                      pods: "1"
+                      secrets: "9"
+                apiVersion: v1
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: policy-crq-label
+        spec:
+          remediationAction: inform
+          severity: low
+          namespaceSelector:
+            exclude:
+              - kube-*
+            include:
+              - default
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                kind: ClusterResourceQuota
+                metadata:
+                  creationTimestamp: null
+                  name: for-name
+                spec:
+                  quota:
+                    hard:
+                      pods: "10"
+                      secrets: "20"
+                  selector:
+                    annotations: null
+                    labels:
+                      matchLabels:
+                        name: frontend
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: PlacementBinding
+metadata:
+  name: binding-policy-clusterresourcequota
+  namespace: 
+placementRef:
+  name: placement-policy-clusterresourcequota
+  kind: PlacementRule
+  apiGroup: apps.open-cluster-management.io
+subjects:
+- name: policy-clusterresourcequota
+  kind: Policy
+  apiGroup: policy.open-cluster-management.io
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: PlacementRule
+metadata:
+  name: placement-policy-clusterresourcequota
+  namespace: 
+spec:
+  clusterConditions:
+  - status: "True"
+    type: ManagedClusterConditionAvailable
+  clusterSelector:
+    matchExpressions:
+      []  # selects all clusters if not specified
