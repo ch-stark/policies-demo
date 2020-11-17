@@ -1,0 +1,92 @@
+apiVersion: policy.open-cluster-management.io/v1
+kind: Policy
+metadata:
+  name: policy-enableClusterLogForwarder
+  namespace: 
+  annotations:
+    policy.open-cluster-management.io/standards: NIST-CSF
+    policy.open-cluster-management.io/categories: PR.IP Information Protection Processes and Procedures
+    policy.open-cluster-management.io/controls: PR.IP-1 Baseline Configuration
+spec:
+  remediationAction: inform
+  disabled: false
+  policy-templates:
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: policy-enableClusterLogForwarder
+        spec:
+          remediationAction: inform
+          severity: low
+          namespaceSelector:
+            exclude:
+              - kube-*
+            include:
+              - default
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: logging.openshift.io/v1
+                kind: ClusterLogForwarder
+                metadata:
+                  name: instance 
+                spec:
+                  outputs:
+                   - name: app-logs 
+                     type: kafka 
+                     url: tls://kafka.example.devlab.com:9093/app-topic 
+                     secret:
+                       name: kafka-secret 
+                   - name: infra-logs
+                     type: kafka
+                     url: tls://kafka.devlab2.example.com:9093/infra-topic
+                   - name: audit-logs
+                     type: kafka
+                     url: tls://kafka.qelab.example.com:9093/audit-topic
+                     secret:
+                       name: kafka-secret-qe
+                  pipelines:
+                   - name: app-topic 
+                     inputRefs: 
+                     - application
+                     outputRefs: 
+                     - app-logs
+                   - name: infra-topic
+                     inputRefs:
+                     - infrastructure
+                     outputRefs:
+                     - infra-logs
+                   - name: audit-topic 
+                     inputRefs:
+                     - audit
+                     outputRefs:
+                     - audit-logs
+                     - default 
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: PlacementBinding
+metadata:
+  name: binding-policy-enableUserWorkload
+  namespace: 
+placementRef:
+  name: placement-policy-enableUserWorkload
+  kind: PlacementRule
+  apiGroup: apps.open-cluster-management.io
+subjects:
+- name: policy-enableUserWorkload
+  kind: Policy
+  apiGroup: policy.open-cluster-management.io
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: PlacementRule
+metadata:
+  name: placement-policy-enableUserWorkload
+  namespace: 
+spec:
+  clusterConditions:
+  - status: "True"
+    type: ManagedClusterConditionAvailable
+  clusterSelector:
+    matchExpressions:
+      []  # selects all clusters if not specified
