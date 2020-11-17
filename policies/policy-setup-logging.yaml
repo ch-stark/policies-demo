@@ -194,7 +194,7 @@ spec:
                       nodeCount: 3
                       storage:
                         storageClassName: gp2
-                        size: 200G
+                        size: 20G
                       redundancyPolicy: SingleRedundancy
                   visualization:
                     type: kibana
