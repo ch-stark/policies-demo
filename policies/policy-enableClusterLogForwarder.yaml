@@ -67,21 +67,21 @@ spec:
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
 metadata:
-  name: binding-policy-enableUserWorkload
+  name: binding-policy-enableClusterLogForwarder
   namespace: 
 placementRef:
   name: placement-policy-enableUserWorkload
   kind: PlacementRule
   apiGroup: apps.open-cluster-management.io
 subjects:
-- name: policy-enableUserWorkload
+- name: policy-enableClusterLogForwarder
   kind: Policy
   apiGroup: policy.open-cluster-management.io
 ---
 apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
 metadata:
-  name: placement-policy-enableUserWorkload
+  name: placement-policy-enableClusterLogForwarder
   namespace: 
 spec:
   clusterConditions:
