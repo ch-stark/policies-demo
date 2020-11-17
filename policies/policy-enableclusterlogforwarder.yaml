@@ -1,7 +1,8 @@
 apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:
-  name: policy-enableClusterLogForwarder
+  name: policy-enableclusterlogforwarder
+  namespace: default
   annotations:
     policy.open-cluster-management.io/standards: NIST-CSF
     policy.open-cluster-management.io/categories: PR.IP Information Protection Processes and Procedures
@@ -14,7 +15,7 @@ spec:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
         metadata:
-          name: policy-enableClusterLogForwarder
+          name: policy-enableclusterlogforwarder
         spec:
           remediationAction: inform
           severity: low
@@ -29,57 +30,62 @@ spec:
                 apiVersion: logging.openshift.io/v1
                 kind: ClusterLogForwarder
                 metadata:
-                  name: instance 
+                  name: instance
                 spec:
                   outputs:
-                   - name: app-logs 
-                     type: kafka 
-                     url: tls://my-cluster-kafka-bootstrap.openshift-operators.svc:9093/app-topic 
-                     secret:
-                       name: kafka-secret 
-                   - name: infra-logs
-                     type: kafka
-                     url: tls://my-cluster-kafka-bootstrap.openshift-operators.svc:9093/infra-topic
-                   - name: audit-logs
-                     type: kafka
-                     url: tls://my-cluster-kafka-bootstrap.openshift-operators.svc:9093/audit-topic
-                     secret:
-                       name: kafka-secret-qe
+                    - name: app-logs
+                      type: kafka
+                      url: >-
+                        tls://my-cluster-kafka-bootstrap.openshift-operators.svc:9093/app-topic
+                      secret:
+                        name: kafka-secret
+                    - name: infra-logs
+                      type: kafka
+                      url: >-
+                        tls://my-cluster-kafka-bootstrap.openshift-operators.svc:9093/infra-topic
+                    - name: audit-logs
+                      type: kafka
+                      url: >-
+                        tls://my-cluster-kafka-bootstrap.openshift-operators.svc:9093/audit-topic
+                      secret:
+                        name: kafka-secret-qe
                   pipelines:
-                   - name: app-topic 
-                     inputRefs: 
-                     - application
-                     outputRefs: 
-                     - app-logs
-                   - name: infra-topic
-                     inputRefs:
-                     - infrastructure
-                     outputRefs:
-                     - infra-logs
-                   - name: audit-topic 
-                     inputRefs:
-                     - audit
-                     outputRefs:
-                     - audit-logs
-                     - default 
+                    - name: app-topic
+                      inputRefs:
+                        - application
+                      outputRefs:
+                        - app-logs
+                    - name: infra-topic
+                      inputRefs:
+                        - infrastructure
+                      outputRefs:
+                        - infra-logs
+                    - name: audit-topic
+                      inputRefs:
+                        - audit
+                      outputRefs:
+                        - audit-logs
+                        - default
 ---
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
 metadata:
-  name: binding-policy-enableClusterLogForwarder
+  name: binding-policy-enableclusterlogforwarder
+  namespace: default
 placementRef:
-  name: placement-policy-enableClusterLogForwarder
+  name: placement-policy-enableclusterlogforwarder
   kind: PlacementRule
   apiGroup: apps.open-cluster-management.io
 subjects:
-- name: policy-enableClusterLogForwarder
+- name: policy-enableclusterlogforwarder
   kind: Policy
   apiGroup: policy.open-cluster-management.io
 ---
 apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
 metadata:
-  name: placement-policy-enableClusterLogForwarder
+  name: placement-policy-enableclusterlogforwarder
+  namespace: default
 spec:
   clusterConditions:
   - status: "True"
