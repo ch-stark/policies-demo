@@ -2,6 +2,7 @@ apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:
   name: policy-config-performanceprofile
+  namespace: default
   annotations:
     policy.open-cluster-management.io/standards: NIST SP 800-53
     policy.open-cluster-management.io/categories: CM Configuration Management
@@ -19,43 +20,46 @@ spec:
           remediationAction: inform
           severity: low
           namespaceSelector:
-            exclude: ["kube-*"]
-            include: ["default"]
+            exclude:
+              - kube-*
+            include:
+              - default
           object-templates:
             - complianceType: musthave
               objectDefinition:
                 apiVersion: performance.openshift.io/v1alpha1
-	        kind: PerformanceProfile
-	        metadata:
-		  name: example-performanceprofile
-	        spec:
-		  additionalKernelArgs:
-		    - nmi_watchdog=0
-		    - audit=0
-		    - mce=off
-		    - processor.max_cstate=1
-		    - idle=poll
-		    - intel_idle.max_cstate=0
-		  cpu:
-		    isolated: 2-3
-		    reserved: 0-1
-		  hugepages:
-		    defaultHugepagesSize: 1G
-		    pages:
-		      - count: 2
-			node: 0
-			size: 1G
-		  nodeSelector:
-		    node-role.kubernetes.io/performance: ''
-		  realTimeKernel:
-		    enabled: true
+                kind: PerformanceProfile
+                metadata:
+                  name: example-performanceprofile
+                spec:
+                  additionalKernelArgs:
+                    - nmi_watchdog=0
+                    - audit=0
+                    - mce=off
+                    - processor.max_cstate=1
+                    - idle=poll
+                    - intel_idle.max_cstate=0
+                  cpu:
+                    isolated: 2-3
+                    reserved: 0-1
+                  hugepages:
+                    defaultHugepagesSize: 1G
+                    pages:
+                      - count: 2
+                  node: 0
+                  size: 1G
+                  nodeSelector:
+                    node-role.kubernetes.io/performance: ''
+                  realTimeKernel:
+                    enabled: true
 ---
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
 metadata:
   name: binding-policy-config-performanceprofile
+  namespace: default
 placementRef:
-  name: placement-config-performanceprofile
+  name: placement-policy-config-performanceprofile
   kind: PlacementRule
   apiGroup: apps.open-cluster-management.io
 subjects:
@@ -66,7 +70,8 @@ subjects:
 apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
 metadata:
-  name: placement-config-performanceprofile
+  name: placement-policy-config-performanceprofile
+  namespace: default
 spec:
   clusterConditions:
   - status: "True"
