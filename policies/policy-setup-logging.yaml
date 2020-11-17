@@ -193,7 +193,7 @@ spec:
                     elasticsearch:
                       nodeCount: 3
                       storage:
-                        storageClassName: <storage-class-name>
+                        storageClassName: default
                         size: 200G
                       redundancyPolicy: SingleRedundancy
                   visualization:
