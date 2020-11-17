@@ -53,8 +53,11 @@ metadata:
   name: placement-policy-etcdencryption
 spec:
   clusterConditions:
-  - status: "True"
-    type: ManagedClusterConditionAvailable
+    - status: 'True'
+      type: ManagedClusterConditionAvailable
   clusterSelector:
     matchExpressions:
-      - {key: handleetcd, operator: In, values: ["yes"]}
+      - key: local-cluster
+        operator: In
+        values:
+          - 'true'
