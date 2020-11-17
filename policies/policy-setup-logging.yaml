@@ -1,7 +1,8 @@
-piVersion: policy.open-cluster-management.io/v1
+apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:
   name: policy-setup-logging
+  namespace: default
   annotations:
     policy.open-cluster-management.io/standards: NIST SP 800-53
     policy.open-cluster-management.io/categories: CM Configuration Management
@@ -19,19 +20,21 @@ spec:
           remediationAction: inform
           severity: low
           namespaceSelector:
-            exclude: ["kube-*"]
-            include: ["default"]
+            exclude:
+              - kube-*
+            include:
+              - default
           object-templates:
             - complianceType: musthave
               objectDefinition:
-		apiVersion: v1
-		kind: Namespace
-		metadata:
-		  name: openshift-operators-redhat 
-		  annotations:
-		    openshift.io/node-selector: ""
-		  labels:
-		    openshift.io/cluster-monitoring: "true" 
+                apiVersion: v1
+                kind: Namespace
+                metadata:
+                  name: openshift-operators-redhat
+                  annotations:
+                    openshift.io/node-selector: ''
+                  labels:
+                    openshift.io/cluster-monitoring: 'true'
     - objectDefinition:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
@@ -41,20 +44,21 @@ spec:
           remediationAction: inform
           severity: low
           namespaceSelector:
-            exclude: ["kube-*"]
-            include: ["default"]
+            exclude:
+              - kube-*
+            include:
+              - default
           object-templates:
             - complianceType: musthave
               objectDefinition:
-		apiVersion: v1
-		kind: Namespace
-		metadata:
-		  name: openshift-logging
-		  annotations:
-		    openshift.io/node-selector: ""
-		  labels:
-		    openshift.io/cluster-monitoring: "true"
-
+                apiVersion: v1
+                kind: Namespace
+                metadata:
+                  name: openshift-logging
+                  annotations:
+                    openshift.io/node-selector: ''
+                  labels:
+                    openshift.io/cluster-monitoring: 'true'
     - objectDefinition:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
@@ -64,17 +68,19 @@ spec:
           remediationAction: inform
           severity: low
           namespaceSelector:
-            exclude: ["kube-*"]
-            include: ["default"]
+            exclude:
+              - kube-*
+            include:
+              - default
           object-templates:
             - complianceType: musthave
               objectDefinition:
-		apiVersion: operators.coreos.com/v1
-		kind: OperatorGroup
-		metadata:
-		  name: openshift-operators-redhat
-		  namespace: openshift-operators-redhat 
-		spec: {}
+                apiVersion: operators.coreos.com/v1
+                kind: OperatorGroup
+                metadata:
+                  name: openshift-operators-redhat
+                  namespace: openshift-operators-redhat
+                spec: {}
     - objectDefinition:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
@@ -84,23 +90,24 @@ spec:
           remediationAction: inform
           severity: low
           namespaceSelector:
-            exclude: ["kube-*"]
-            include: ["default"]
+            exclude:
+              - kube-*
+            include:
+              - default
           object-templates:
             - complianceType: musthave
               objectDefinition:
-		apiVersion: operators.coreos.com/v1alpha1
-		kind: Subscription
-		metadata:
-		  name: "elasticsearch-operator"
-		  namespace: "openshift-operators-redhat" 
-		spec:
-		  channel: "4.6" 
-		  installPlanApproval: "Automatic"
-		  source: "redhat-operators" 
-		  sourceNamespace: "openshift-marketplace"
-		  name: "elasticsearch-operator"
-
+                apiVersion: operators.coreos.com/v1alpha1
+                kind: Subscription
+                metadata:
+                  name: elasticsearch-operator
+                  namespace: openshift-operators-redhat
+                spec:
+                  channel: '4.6'
+                  installPlanApproval: Automatic
+                  source: redhat-operators
+                  sourceNamespace: openshift-marketplace
+                  name: elasticsearch-operator
     - objectDefinition:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
@@ -110,21 +117,21 @@ spec:
           remediationAction: inform
           severity: low
           namespaceSelector:
-            exclude: ["kube-*"]
-            include: ["default"]
+            exclude:
+              - kube-*
+            include:
+              - default
           object-templates:
             - complianceType: musthave
               objectDefinition:
-		apiVersion: operators.coreos.com/v1
-		kind: OperatorGroup
-		metadata:
-		  name: cluster-logging
-		  namespace: openshift-logging 
-		spec:
-		  targetNamespaces:
-		  - openshift-logging 	
-
-
+                apiVersion: operators.coreos.com/v1
+                kind: OperatorGroup
+                metadata:
+                  name: cluster-logging
+                  namespace: openshift-logging
+                spec:
+                  targetNamespaces:
+                    - openshift-logging
     - objectDefinition:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
@@ -134,22 +141,23 @@ spec:
           remediationAction: inform
           severity: low
           namespaceSelector:
-            exclude: ["kube-*"]
-            include: ["default"]
+            exclude:
+              - kube-*
+            include:
+              - default
           object-templates:
             - complianceType: musthave
               objectDefinition:
-		apiVersion: operators.coreos.com/v1alpha1
-		kind: Subscription
-		metadata:
-		  name: cluster-logging
-		  namespace: openshift-logging 
-		spec:
-		  channel: "4.6" 
-		  name: cluster-logging
-		  source: redhat-operators 
-		  sourceNamespace: openshift-marketplace
-
+                apiVersion: operators.coreos.com/v1alpha1
+                kind: Subscription
+                metadata:
+                  name: cluster-logging
+                  namespace: openshift-logging
+                spec:
+                  channel: '4.6'
+                  name: cluster-logging
+                  source: redhat-operators
+                  sourceNamespace: openshift-marketplace
     - objectDefinition:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
@@ -159,54 +167,55 @@ spec:
           remediationAction: inform
           severity: low
           namespaceSelector:
-            exclude: ["kube-*"]
-            include: ["default"]
+            exclude:
+              - kube-*
+            include:
+              - default
           object-templates:
             - complianceType: musthave
               objectDefinition:
-		apiVersion: "logging.openshift.io/v1"
-		kind: "ClusterLogging"
-		metadata:
-		  name: "instance" 
-		  namespace: "openshift-logging"
-		spec:
-		  managementState: "Managed"  
-		  logStore:
-		    type: "elasticsearch"  
-		    retentionPolicy: 
-		      application:
-			maxAge: 1d
-		      infra:
-			maxAge: 7d
-		      audit:
-			maxAge: 7d
-		    elasticsearch:
-		      nodeCount: 3 
-		      storage:
-			storageClassName: "default" 
-			size: 200G
-		      redundancyPolicy: "SingleRedundancy"
-		  visualization:
-		    type: "kibana"  
-		    kibana:
-		      replicas: 1
-		  curation:
-		    type: "curator"
-		    curator:
-		      schedule: "30 3 * * *" 
-		  collection:
-		    logs:
-		      type: "fluentd"  
-		      fluentd: {}
-
-	 
+                apiVersion: logging.openshift.io/v1
+                kind: ClusterLogging
+                metadata:
+                  name: instance
+                  namespace: openshift-logging
+                spec:
+                  managementState: Managed
+                  logStore:
+                    type: elasticsearch
+                    retentionPolicy:
+                      application:
+                        maxAge: 1d
+                      infra:
+                        maxAge: 7d
+                      audit:
+                        maxAge: 7d
+                    elasticsearch:
+                      nodeCount: 3
+                      storage:
+                        storageClassName: <storage-class-name>
+                        size: 200G
+                      redundancyPolicy: SingleRedundancy
+                  visualization:
+                    type: kibana
+                    kibana:
+                      replicas: 1
+                  curation:
+                    type: curator
+                    curator:
+                      schedule: 30 3 * * *
+                  collection:
+                    logs:
+                      type: fluentd
+                      fluentd: {}
 ---
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
 metadata:
   name: binding-policy-setup-logging
+  namespace: default
 placementRef:
-  name: placement-policy-namespace
+  name: placement-policy-setup-logging
   kind: PlacementRule
   apiGroup: apps.open-cluster-management.io
 subjects:
@@ -218,7 +227,11 @@ apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
 metadata:
   name: placement-policy-setup-logging
+  namespace: default
 spec:
   clusterConditions:
   - status: "True"
-
+    type: ManagedClusterConditionAvailable
+  clusterSelector:
+    matchExpressions:
+      - {key: local-cluster, operator: In, values: ["true"]}
