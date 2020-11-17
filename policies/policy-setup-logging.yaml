@@ -192,12 +192,12 @@ spec:
                         maxAge: 7d
                     elasticsearch:
                       nodeCount: 2
-                        resources: 
-                          limits:
-                            memory: 2Gi
-                          requests:
-                            cpu: 200m
-                            memory: 2Gi
+                      resources: 
+                        limits:
+                          memory: 2Gi
+                        requests:
+                          cpu: 200m
+                          memory: 2Gi
                         storage:
                           storageClassName: gp2
                           size: 20G
