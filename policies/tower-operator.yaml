@@ -1,0 +1,120 @@
+apiVersion: policy.open-cluster-management.io/v1
+kind: Policy
+metadata:
+  name: policy-ansible-resource-operator
+  namespace: tower-policies
+  annotations:
+    apps.open-cluster-management.io/hosting-deployable: >-
+      tower-policies/tower-resource-operator-Policy-policy-ansible-resource-operator
+    apps.open-cluster-management.io/hosting-subscription: tower-policies/tower-resource-operator
+    apps.open-cluster-management.io/sync-source: subgbk8s-tower-policies/tower-resource-operator
+    policy.open-cluster-management.io/categories: PR.IP Information Protection Processes and Procedures
+    policy.open-cluster-management.io/controls: PR.IP-1 Baseline configuration
+    policy.open-cluster-management.io/standards: NIST-CSF
+  creationTimestamp: '2020-11-06T15:28:12Z'
+  generation: 1
+  managedFields:
+    - apiVersion: policy.open-cluster-management.io/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:metadata':
+          'f:annotations':
+            .: {}
+            'f:apps.open-cluster-management.io/hosting-deployable': {}
+            'f:apps.open-cluster-management.io/hosting-subscription': {}
+            'f:apps.open-cluster-management.io/sync-source': {}
+            'f:policy.open-cluster-management.io/categories': {}
+            'f:policy.open-cluster-management.io/controls': {}
+            'f:policy.open-cluster-management.io/standards': {}
+        'f:spec':
+          .: {}
+          'f:disabled': {}
+          'f:policy-templates': {}
+          'f:remediationAction': {}
+      manager: multicluster-operators-subscription
+      operation: Update
+      time: '2020-11-06T15:28:12Z'
+  resourceVersion: '30294644'
+  selfLink: >-
+    /apis/policy.open-cluster-management.io/v1/namespaces/tower-policies/policies/policy-ansible-resource-operator
+  uid: a52c5a5c-67d0-4a5c-a6c5-d4defbc4ea33
+spec:
+  disabled: false
+  policy-templates:
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: policy-ansible-resource-operator-project
+        spec:
+          namespaceSelector:
+            exclude:
+              - kube-*
+            include:
+              - '*'
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: project.openshift.io/v1
+                kind: Project
+                metadata:
+                  name: tower-resource-operator
+                spec: {}
+          remediationAction: enforce
+          severity: high
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: policy-ansible-resource-operator
+        spec:
+          namespaceSelector:
+            exclude:
+              - kube-*
+            include:
+              - '*'
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: operators.coreos.com/v1
+                kind: OperatorGroup
+                metadata:
+                  name: tower-resource-operator-group
+                  namespace: tower-resource-operator
+                  annotations:
+                    olm.providedAPIs: >-
+                      AnsibleJob.v1alpha1.tower.ansible.com,JobTemplate.v1alpha1.tower.ansible.com
+                spec:
+                  targetNamespaces:
+                    - tower-resource-operator
+          remediationAction: enforce
+          severity: high
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: policy-ansible-resource-operator
+        spec:
+          namespaceSelector:
+            exclude:
+              - kube-*
+            include:
+              - '*'
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: operators.coreos.com/v1alpha1
+                kind: Subscription
+                metadata:
+                  name: awx-resource-operator
+                  namespace: tower-resource-operator
+                spec:
+                  name: awx-resource-operator
+                  channel: release-0.1
+                  installPlanApproval: Automatic
+                  source: redhat-operators
+                  sourceNamespace: openshift-marketplace
+                  startingCSV: awx-resource-operator.v0.1.0
+          remediationAction: enforce
+          severity: high
+  remediationAction: enforce
