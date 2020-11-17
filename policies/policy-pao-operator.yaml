@@ -71,7 +71,7 @@ spec:
                   name: performance-addon-operator
                   namespace: openshift-performance-addon
                 spec:
-                  channel: "4.5"
+                  channel: "4.6"
                   name: performance-addon-operator
                   source: redhat-operators
                   sourceNamespace: openshift-marketplace
