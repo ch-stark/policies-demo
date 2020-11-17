@@ -8,7 +8,7 @@ metadata:
     policy.open-cluster-management.io/categories: PR.IP Information Protection Processes and Procedures
     policy.open-cluster-management.io/controls: PR.IP-1 Baseline Configuration
 spec:
-  remediationAction: inform
+  remediationAction: enforce
   disabled: false
   policy-templates:
     - objectDefinition:
@@ -35,15 +35,15 @@ spec:
                   outputs:
                    - name: app-logs 
                      type: kafka 
-                     url: tls://kafka.example.devlab.com:9093/app-topic 
+                     url: tls://my-cluster-kafka-bootstrap.openshift-operators.svc:9093/app-topic 
                      secret:
                        name: kafka-secret 
                    - name: infra-logs
                      type: kafka
-                     url: tls://kafka.devlab2.example.com:9093/infra-topic
+                     url: tls://my-cluster-kafka-bootstrap.openshift-operators.svc:9093/infra-topic
                    - name: audit-logs
                      type: kafka
-                     url: tls://kafka.qelab.example.com:9093/audit-topic
+                     url: tls://my-cluster-kafka-bootstrap.openshift-operators.svc:9093/audit-topic
                      secret:
                        name: kafka-secret-qe
                   pipelines:
