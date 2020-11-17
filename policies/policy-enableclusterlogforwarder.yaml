@@ -2,7 +2,6 @@ apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:
   name: policy-enableClusterLogForwarder
-  namespace: default
   annotations:
     policy.open-cluster-management.io/standards: NIST-CSF
     policy.open-cluster-management.io/categories: PR.IP Information Protection Processes and Procedures
@@ -68,7 +67,6 @@ apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
 metadata:
   name: binding-policy-enableClusterLogForwarder
-  namespace: 
 placementRef:
   name: placement-policy-enableClusterLogForwarder
   kind: PlacementRule
@@ -82,7 +80,6 @@ apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
 metadata:
   name: placement-policy-enableClusterLogForwarder
-  namespace: 
 spec:
   clusterConditions:
   - status: "True"
