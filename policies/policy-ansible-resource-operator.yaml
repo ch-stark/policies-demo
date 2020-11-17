@@ -2,42 +2,11 @@ apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:
   name: policy-ansible-resource-operator
-  namespace: tower-policies
+  namespace: default
   annotations:
-    apps.open-cluster-management.io/hosting-deployable: >-
-      tower-policies/tower-resource-operator-Policy-policy-ansible-resource-operator
-    apps.open-cluster-management.io/hosting-subscription: tower-policies/tower-resource-operator
-    apps.open-cluster-management.io/sync-source: subgbk8s-tower-policies/tower-resource-operator
+    policy.open-cluster-management.io/standards: NIST-CSF
     policy.open-cluster-management.io/categories: PR.IP Information Protection Processes and Procedures
     policy.open-cluster-management.io/controls: PR.IP-1 Baseline configuration
-    policy.open-cluster-management.io/standards: NIST-CSF
-  creationTimestamp: '2020-11-06T15:28:12Z'
-  generation: 1
-  managedFields:
-    - apiVersion: policy.open-cluster-management.io/v1
-      fieldsType: FieldsV1
-      fieldsV1:
-        'f:metadata':
-          'f:annotations':
-            .: {}
-            'f:apps.open-cluster-management.io/hosting-deployable': {}
-            'f:apps.open-cluster-management.io/hosting-subscription': {}
-            'f:apps.open-cluster-management.io/sync-source': {}
-            'f:policy.open-cluster-management.io/categories': {}
-            'f:policy.open-cluster-management.io/controls': {}
-            'f:policy.open-cluster-management.io/standards': {}
-        'f:spec':
-          .: {}
-          'f:disabled': {}
-          'f:policy-templates': {}
-          'f:remediationAction': {}
-      manager: multicluster-operators-subscription
-      operation: Update
-      time: '2020-11-06T15:28:12Z'
-  resourceVersion: '30294644'
-  selfLink: >-
-    /apis/policy.open-cluster-management.io/v1/namespaces/tower-policies/policies/policy-ansible-resource-operator
-  uid: a52c5a5c-67d0-4a5c-a6c5-d4defbc4ea33
 spec:
   disabled: false
   policy-templates:
@@ -118,3 +87,30 @@ spec:
           remediationAction: enforce
           severity: high
   remediationAction: enforce
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: PlacementBinding
+metadata:
+  name: binding-policy-ansible-resource-operator
+  namespace: default
+placementRef:
+  name: placement-policy-ansible-resource-operator
+  kind: PlacementRule
+  apiGroup: apps.open-cluster-management.io
+subjects:
+- name: policy-ansible-resource-operator
+  kind: Policy
+  apiGroup: policy.open-cluster-management.io
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: PlacementRule
+metadata:
+  name: placement-policy-ansible-resource-operator
+  namespace: default
+spec:
+  clusterConditions:
+  - status: "True"
+    type: ManagedClusterConditionAvailable
+  clusterSelector:
+    matchExpressions:
+      - {key: name, operator: In, values: ["local-cluster"]}
