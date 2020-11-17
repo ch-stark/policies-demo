@@ -16,7 +16,7 @@ spec:
         metadata:
           name: policy-namespace-example
         spec:
-          remediationAction: enforce
+          remediationAction: inform
           severity: low
           namespaceSelector:
             exclude: ["kube-*"]
