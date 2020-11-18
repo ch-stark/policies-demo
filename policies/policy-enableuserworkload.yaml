@@ -1,7 +1,7 @@
 apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:
-  name: policy-enableUserWorkload
+  name: policy-enableuserworkload
   namespace: 
   annotations:
     policy.open-cluster-management.io/standards: NIST-CSF
@@ -15,7 +15,7 @@ spec:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
         metadata:
-          name: policy-namespace-1-prod
+          name: policy-enableuserworkload
         spec:
           remediationAction: inform
           severity: low
@@ -39,21 +39,21 @@ spec:
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
 metadata:
-  name: binding-policy-enableUserWorkload
+  name: binding-policy-enableuserworkload
   namespace: 
 placementRef:
-  name: placement-policy-enableUserWorkload
+  name: placement-policy-enableuserworkload
   kind: PlacementRule
   apiGroup: apps.open-cluster-management.io
 subjects:
-- name: policy-enableUserWorkload
+- name: policy-enableuserworkload
   kind: Policy
   apiGroup: policy.open-cluster-management.io
 ---
 apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
 metadata:
-  name: placement-policy-enableUserWorkload
+  name: placement-policy-enableuserworkload
   namespace: 
 spec:
   clusterConditions:
