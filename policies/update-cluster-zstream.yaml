@@ -26,9 +26,10 @@ spec:
                 spec:
                   channel: stable-4.5
                   desiredUpdate:
-                    image: '' 
-                    version: ''
-                  upstream: ''
+                    force: false
+                    image: quay.io/openshift-release-dev/ocp-release@sha256:3ad6bab0bfb5642ef18ebbfc9f011da6cdcd950f5f8ccbf5b34c6c5cc0b4c289
+                    version: ""
+                  upstream: https://api.openshift.com/api/upgrades_info/v1/graph
               remediationAction: inform
           severity: high
   remediationAction: inform
