@@ -36,10 +36,10 @@ spec:
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
 metadata:
-  name: binding-policy-remove-kubeadmin
+  name: binding-remove-kubeadmin
   namespace: default
 placementRef:
-  name: placement-policy-remove-kubeadmin
+  name: placement-remove-kubeadmin
   kind: PlacementRule
   apiGroup: apps.open-cluster-management.io
 subjects:
@@ -50,7 +50,7 @@ subjects:
 apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
 metadata:
-  name: placement-policy-remove-kubeadmin
+  name: placement-remove-kubeadmin
   namespace: default
 spec:
   clusterConditions:
