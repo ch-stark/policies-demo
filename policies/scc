@@ -37,3 +37,33 @@ volumes:
 - persistentVolumeClaim
 - projected
 - secret
+
+
+
+
+
+
+apiVersion: policy/v1beta1 
+kind: PodDisruptionBudget
+metadata:
+  name: my-pdb
+spec:
+  minAvailable: 2  
+  selector:  
+    matchLabels:
+      foo: bar
+PodDisruptionBudget is part of the policy/v1beta1 API group.
+The minimum number of pods that must be available simultaneously. This can be either an integer or a string specifying a percentage, for example, 20%.
+A label query over a set of resources. The result of matchLabels and matchExpressions are logically conjoined.
+Or:
+
+
+apiVersion: policy/v1beta1 
+kind: PodDisruptionBudget
+metadata:
+  name: my-pdb
+spec:
+  maxUnavailable: 25% 
+  selector: 
+    matchLabels:
+      foo: bar
