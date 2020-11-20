@@ -25,7 +25,7 @@ spec:
             include:
               - default
           object-templates:
-            - complianceType: musthave
+            - complianceType: mustnothave
               objectDefinition:
                 apiVersion: config.openshift.io/v1
                 kind: ClusterOperator
