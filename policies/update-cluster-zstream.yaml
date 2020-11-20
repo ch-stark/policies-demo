@@ -37,21 +37,21 @@ spec:
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
 metadata:
-  name: binding-upgrade-cluster
+  name: binding-upgrade-cluster-zstream
   namespace: default
 placementRef:
-  name: placement-upgrade-cluster
+  name: placement-upgrade-cluster-zstream
   kind: PlacementRule
   apiGroup: apps.open-cluster-management.io
 subjects:
-- name: upgrade-cluster
+- name: upgrade-cluster-zstream
   kind: Policy
   apiGroup: policy.open-cluster-management.io
 ---
 apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
 metadata:
-  name: placement-upgrade-cluster
+  name: placement-upgrade-cluster-zstream
   namespace: default
 spec:
   clusterConditions:
