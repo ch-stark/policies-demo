@@ -1,0 +1,14 @@
+Configure Prometheus to export to prometheus-kafka-adapter
+
+Using solution from : https://access.redhat.com/solutions/4931911
+Create a config map that sets a remote-write
+$ oc -n openshift-monitoring create configmap cluster-monitoring-config
+Edit the newly created config map and add the data field
+#
+apiVersion: v1
+data:
+  config.yaml: |
+    prometheusK8s:
+      remoteWrite:
+        - url: "http://prometheus-kafka-adapter:8080/receive"
+kind: ConfigMap
