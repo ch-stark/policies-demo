@@ -19,14 +19,14 @@ spec:
           object-templates:
             - complianceType: musthave
               objectDefinition:
-               apiVersion: v1
-               data:
-                config.yaml: |
-                  prometheusK8s:
-                  remoteWrite:
-                  - url: "http://prometheus-kafka-adapter:8080/receive"
-               kind: ConfigMap
-             remediationAction: inform
+                apiVersion: v1
+                kind: ConfigMap
+                data:
+                  config.yaml: |
+                    prometheusK8s:
+                      remoteWrite:
+                        - url: "http://prometheus-kafka-adapter:8080/receive"
+                  remediationAction: inform
           severity: high
   remediationAction: inform
 ---
@@ -56,5 +56,4 @@ spec:
   clusterSelector:
     matchExpressions:
       - {key: remoterewrite, operator: In, values: ["yes"]}
-
 
