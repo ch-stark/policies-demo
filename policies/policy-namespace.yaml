@@ -28,6 +28,20 @@ spec:
                 apiVersion: v1
                 metadata:
                   name: namespacedemo
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                kind: Namespace # must have namespace 'gitops'
+                apiVersion: v1
+                metadata:
+                  name: policies
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                kind: Namespace # must have namespace 'gitops'
+                apiVersion: v1
+                metadata:
+                  name: etcd-config                 
 ---
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
