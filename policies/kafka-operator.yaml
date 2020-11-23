@@ -46,21 +46,21 @@ spec:
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
 metadata:
-  name: binding-policy-kafka-config
+  name: binding-kafka-operator-install
   namespace: default
 placementRef:
-  name: placement-policy-kafka-config
+  name: placement-kafka-operator-install
   kind: PlacementRule
   apiGroup: apps.open-cluster-management.io
 subjects:
-- name: policy-kafka-config
+- name: policy-kafka-operator-install
   kind: Policy
   apiGroup: policy.open-cluster-management.io
 ---
 apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
 metadata:
-  name: placement-policy-kafka-config
+  name: placement-kafka-operator-install
   namespace: default
 spec:
   clusterConditions:
