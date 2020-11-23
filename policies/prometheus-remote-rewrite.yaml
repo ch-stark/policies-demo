@@ -1,14 +1,60 @@
-Configure Prometheus to export to prometheus-kafka-adapter
+apiVersion: policy.open-cluster-management.io/v1
+kind: Policy
+metadata:
+  name: prometheus-remote-rewrite
+  namespace: default
+  annotations:
+    policy.open-cluster-management.io/standards: NIST SP 800-53
+    policy.open-cluster-management.io/categories: CM Configuration Management
+    policy.open-cluster-management.io/controls: CM-2 Baseline Configuration
+spec:
+  disabled: false
+  policy-templates:
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: prometheus-remote-rewrite
+        spec:
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+               apiVersion: v1
+               data:
+                config.yaml: |
+                  prometheusK8s:
+                  remoteWrite:
+                  - url: "http://prometheus-kafka-adapter:8080/receive"
+               kind: ConfigMap
+             remediationAction: inform
+          severity: high
+  remediationAction: inform
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: PlacementBinding
+metadata:
+  name: binding-prometheus-remote-rewrite
+  namespace: default
+placementRef:
+  name: placement-prometheus-remote-rewrite
+  kind: PlacementRule
+  apiGroup: apps.open-cluster-management.io
+subjects:
+- name: prometheus-remote-rewrite
+  kind: Policy
+  apiGroup: policy.open-cluster-management.io
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: PlacementRule
+metadata:
+  name: placement-prometheus-remote-rewrite
+  namespace: default
+spec:
+  clusterConditions:
+  - status: "True"
+    type: ManagedClusterConditionAvailable
+  clusterSelector:
+    matchExpressions:
+      - {key: remoterewrite, operator: In, values: ["yes"]}
 
-Using solution from : https://access.redhat.com/solutions/4931911
-Create a config map that sets a remote-write
-$ oc -n openshift-monitoring create configmap cluster-monitoring-config
-Edit the newly created config map and add the data field
-#
-apiVersion: v1
-data:
-  config.yaml: |
-    prometheusK8s:
-      remoteWrite:
-        - url: "http://prometheus-kafka-adapter:8080/receive"
-kind: ConfigMap
+
