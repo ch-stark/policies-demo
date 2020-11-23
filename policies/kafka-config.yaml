@@ -91,6 +91,78 @@ spec:
                   entityOperator:
                     topicOperator: {}
                     userOperator: {}
+
+
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: policy-kafka-topics
+        spec:
+          remediationAction: inform
+          severity: low
+          namespaceSelector:
+            exclude:
+              - kube-*
+            include:
+              - default
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: kafka.strimzi.io/v1beta1
+                kind: KafkaTopic
+                metadata:
+                  name: receive-topic
+                  labels:
+                    strimzi.io/cluster: my-cluster
+                spec:
+                  partitions: 3
+                  replicas: 1
+                  config:
+                    retention.ms: 7200000
+                    segment.bytes: 1073741824
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: kafka.strimzi.io/v1beta1
+                kind: KafkaTopic
+                metadata:
+                  name: app-topic
+                  labels:
+                    strimzi.io/cluster: my-cluster
+                spec:
+                  partitions: 3
+                  replicas: 1
+                  config:
+                    retention.ms: 7200000
+                    segment.bytes: 1073741824
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: kafka.strimzi.io/v1beta1
+                kind: KafkaTopic
+                metadata:
+                  name: infra-topic
+                  labels:
+                    strimzi.io/cluster: my-cluster
+                spec:
+                  partitions: 3
+                  replicas: 1
+                  config:
+                    retention.ms: 7200000
+                    segment.bytes: 1073741824
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: kafka.strimzi.io/v1beta1
+                kind: KafkaTopic
+                metadata:
+                  name: audit-topic
+                  labels:
+                    strimzi.io/cluster: my-cluster
+                spec:
+                  partitions: 3
+                  replicas: 1
+                  config:
+                    retention.ms: 7200000
+                    segment.bytes: 1073741824                   
 ---
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
@@ -117,4 +189,4 @@ spec:
     type: ManagedClusterConditionAvailable
   clusterSelector:
     matchExpressions:
-      - {key: local-cluster, operator: In, values: ["true"]}
+      - {key: kafka, operator: In, values: ["true"]}
