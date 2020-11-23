@@ -2,6 +2,7 @@ apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:
   name: policy-namespace
+  namespace: default
   annotations:
     policy.open-cluster-management.io/standards: NIST SP 800-53
     policy.open-cluster-management.io/categories: CM Configuration Management
@@ -19,34 +20,35 @@ spec:
           remediationAction: inform
           severity: low
           namespaceSelector:
-            exclude: ["kube-*"]
-            include: ["default"]
+            exclude:
+              - kube-*
+            include:
+              - default
           object-templates:
             - complianceType: musthave
               objectDefinition:
-                kind: Namespace # must have namespace 'gitops'
+                kind: Namespace
                 apiVersion: v1
                 metadata:
                   name: namespacedemo
-          object-templates:
             - complianceType: musthave
               objectDefinition:
-                kind: Namespace # must have namespace 'gitops'
+                kind: Namespace
                 apiVersion: v1
                 metadata:
                   name: policies
-          object-templates:
             - complianceType: musthave
               objectDefinition:
-                kind: Namespace # must have namespace 'gitops'
+                kind: Namespace
                 apiVersion: v1
                 metadata:
-                  name: etcd-config                 
+                  name: etcd-config
 ---
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
 metadata:
   name: binding-policy-namespace
+  namespace: default
 placementRef:
   name: placement-policy-namespace
   kind: PlacementRule
@@ -60,6 +62,7 @@ apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
 metadata:
   name: placement-policy-namespace
+  namespace: default
 spec:
   clusterConditions:
   - status: "True"
