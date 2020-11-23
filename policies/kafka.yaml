@@ -1,0 +1,120 @@
+apiVersion: policy.open-cluster-management.io/v1
+kind: Policy
+metadata:
+  name: policy-kafka-config
+  namespace: default
+  annotations:
+    policy.open-cluster-management.io/standards: NIST-CSF
+    policy.open-cluster-management.io/categories: PR.IP Information Protection Processes and Procedures
+    policy.open-cluster-management.io/controls: PR.IP-1 Baseline Configuration
+spec:
+  remediationAction: inform
+  disabled: false
+  policy-templates:
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: policy-kafka-config1
+        spec:
+          remediationAction: inform
+          severity: low
+          namespaceSelector:
+            exclude:
+              - kube-*
+            include:
+              - default
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: kafka.strimzi.io/v1beta1
+                kind: Kafka
+                metadata:
+                  name: my-cluster
+                spec:
+                  kafka:
+                    version: 2.6.0
+                    replicas: 1
+                    resources:
+                      requests:
+                        memory: 4Gi
+                        cpu: '1'
+                      limits:
+                        memory: 4Gi
+                        cpu: '2'
+                      jvmOptions:
+                        '-Xms': 3276m
+                        '-Xmx': 3276m
+                    listeners:
+                      - name: plain
+                        port: 9092
+                        type: internal
+                        tls: false
+                      - name: external
+                        port: 9094
+                        type: nodeport
+                        tls: false
+                    config:
+                      auto.create.topics.enable: 'true'
+                      offsets.topic.replication.factor: 1
+                      transaction.state.log.replication.factor: 1
+                      transaction.state.log.min.isr: 1
+                      log.message.format.version: '2.6'
+                      log.retention.hours: 1
+                    storage:
+                      type: persistent-claim
+                      size: 2Gi
+                      class: standard
+                      deleteClaim: false
+                    logging:
+                      type: inline
+                      loggers:
+                        kafka.root.logger.level: INFO
+                  zookeeper:
+                    replicas: 1
+                    storage:
+                      type: persistent-claim
+                      size: 2Gi
+                      class: standard
+                      deleteClaim: false
+                    resources:
+                      requests:
+                        memory: 2Gi
+                        cpu: '1'
+                      limits:
+                        memory: 2Gi
+                        cpu: '1.5'
+                    logging:
+                      type: inline
+                      loggers:
+                        zookeeper.root.logger: INFO
+                  entityOperator:
+                    topicOperator: {}
+                    userOperator: {}
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: PlacementBinding
+metadata:
+  name: binding-policy-kafka-config
+  namespace: default
+placementRef:
+  name: placement-policy-kafka-config
+  kind: PlacementRule
+  apiGroup: apps.open-cluster-management.io
+subjects:
+- name: policy-kafka-config
+  kind: Policy
+  apiGroup: policy.open-cluster-management.io
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: PlacementRule
+metadata:
+  name: placement-policy-kafka-config
+  namespace: default
+spec:
+  clusterConditions:
+  - status: "True"
+    type: ManagedClusterConditionAvailable
+  clusterSelector:
+    matchExpressions:
+      - {key: local-cluster, operator: In, values: ["true"]}
