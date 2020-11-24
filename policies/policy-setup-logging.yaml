@@ -199,7 +199,7 @@ spec:
                           cpu: 20m
                           memory: 2Gi
                       storage:
-                        storageClassName: "default"
+                        storageClassName: "gp2"
                         size: 20G
                       redundancyPolicy: "SingleRedundancy"
                   visualization:
