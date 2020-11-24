@@ -25,7 +25,7 @@ spec:
                   config.yaml: |
                     prometheusK8s:
                       remoteWrite:
-                        - url: "tls://my-cluster-kafka-bootstrap.openshift-operators.svc:9093/receive"
+                        - url: "tls://my-cluster-kafka-bootstrap.openshift-operators.svc:9093/receive-topic"
                   remediationAction: inform
           severity: high
   remediationAction: inform
