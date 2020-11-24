@@ -200,7 +200,7 @@ spec:
                           memory: 2Gi
                       storage:
                         storageClassName: "default"
-                        size: 200G
+                        size: 20G
                       redundancyPolicy: "SingleRedundancy"
                   visualization:
                     type: "kibana"
