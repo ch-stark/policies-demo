@@ -31,7 +31,7 @@ spec:
                 kind: Subscription
                 metadata:
                   name: amq-streams
-                  namespace: openshift-operators
+                  namespace: kafka
                   labels:
                     operators.coreos.com/amq-streams.openshift-operators: ''
                 spec:
