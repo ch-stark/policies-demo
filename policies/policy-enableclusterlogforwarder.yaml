@@ -37,19 +37,15 @@ spec:
                     - name: app-logs
                       type: kafka
                       url: >-
-                        tls://my-cluster-kafka-bootstrap.openshift-operators.svc:9093/app-topic
-                      secret:
-                        name: kafka-secret
+                        http://my-cluster-kafka-bootstrap.openshift-operators.svc:9092/app-topic
                     - name: infra-logs
                       type: kafka
                       url: >-
-                        tls://my-cluster-kafka-bootstrap.openshift-operators.svc:9093/infra-topic
+                        http://my-cluster-kafka-bootstrap.openshift-operators.svc:9092/infra-topic
                     - name: audit-logs
                       type: kafka
                       url: >-
-                        tls://my-cluster-kafka-bootstrap.openshift-operators.svc:9093/audit-topic
-                      secret:
-                        name: kafka-secret-qe
+                        http://my-cluster-kafka-bootstrap.openshift-operators.svc:9092/audit-topic
                   pipelines:
                     - name: app-topic
                       inputRefs:
