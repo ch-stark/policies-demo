@@ -28,6 +28,7 @@ spec:
                 kind: Kafka
                 metadata:
                   name: my-cluster
+                  namespace: kafka
                 spec:
                   kafka:
                     version: 2.5.0
@@ -69,6 +70,7 @@ spec:
                 kind: KafkaTopic
                 metadata:
                   name: receive-topic
+                  namespace: kafka
                   labels:
                     strimzi.io/cluster: my-cluster
                 spec:
@@ -83,6 +85,7 @@ spec:
                 kind: KafkaTopic
                 metadata:
                   name: app-topic
+                  namespace: kafka
                   labels:
                     strimzi.io/cluster: my-cluster
                 spec:
@@ -97,6 +100,7 @@ spec:
                 kind: KafkaTopic
                 metadata:
                   name: infra-topic
+                  namespace: kafka
                   labels:
                     strimzi.io/cluster: my-cluster
                 spec:
@@ -111,6 +115,7 @@ spec:
                 kind: KafkaTopic
                 metadata:
                   name: audit-topic
+                  namespace: kafka
                   labels:
                     strimzi.io/cluster: my-cluster
                 spec:
