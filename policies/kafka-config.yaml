@@ -183,10 +183,15 @@ kind: PlacementRule
 metadata:
   name: placement-policy-kafka-config
   namespace: default
+apiVersion: apps.open-cluster-management.io/v1
+kind: PlacementRule
+metadata:
+  name: placement-kafka-operator-install
+  namespace: default
 spec:
   clusterConditions:
   - status: "True"
     type: ManagedClusterConditionAvailable
   clusterSelector:
     matchExpressions:
-      - {key: kafka, operator: In, values: ["true"]}
+      - {key: local-cluster, operator: In, values: ["true"]}
