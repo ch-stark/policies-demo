@@ -31,7 +31,7 @@ spec:
                 apiVersion: v1
                 metadata:
                   labels:
-                    admission.gatekeeper.sh/ignore:true
+                    admission.gatekeeper.sh/ignore: true
 ---
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
