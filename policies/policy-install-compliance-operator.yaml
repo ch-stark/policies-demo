@@ -31,7 +31,7 @@ spec:
                 kind: Subscription
                 metadata:
                   name: compliance-operator
-                  namespace: openshift-operators
+                  namespace: openshift-compliance
                   labels:
                     operators.coreos.com/compliance-operator.openshift-operators: ''
                 spec:
