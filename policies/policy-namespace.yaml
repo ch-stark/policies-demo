@@ -43,6 +43,12 @@ spec:
                 apiVersion: v1
                 metadata:
                   name: etcd-config
+             - complianceType: musthave
+              objectDefinition:
+                kind: Namespace
+                apiVersion: v1
+                metadata:
+                  name: openshift-compliance             
 ---
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
