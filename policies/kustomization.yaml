@@ -1,2 +1,4 @@
 resources:
 - gatekeepernamespace.yaml
+- gatekeeperinstall.yaml
+
