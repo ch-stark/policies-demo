@@ -54,7 +54,13 @@ spec:
                 kind: Namespace
                 apiVersion: v1
                 metadata:
-                   name: kafka                      
+                   name: kafka  
+            - complianceType: musthave
+              objectDefinition:
+                kind: Namespace
+                apiVersion: v1
+                metadata:
+                   name: gatekeeper-system 
 ---
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
